@@ -1,4 +1,4 @@
-# eventique
+# Eventique
 ### AI Enhanced Event Planning
 
 
