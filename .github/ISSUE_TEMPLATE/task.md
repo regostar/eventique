@@ -1,10 +1,14 @@
 ---
 name: Task
-about: 'Story: #2 '
+about: " What we are doing exactly here?"
 title: 'Task : <Task Name>'
 labels: ''
 assignees: ''
 
 ---
 
-What we are doing exactly here?
+Story: #2 
+
+Description:- 
+- 
+-
