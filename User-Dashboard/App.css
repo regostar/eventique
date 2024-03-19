@@ -1,0 +1,124 @@
+.dashboard-navigation {
+  text-align: center; /* Center-align the navigation links */
+}
+
+.dashboard-navigation ul {
+  display: inline-block; /* Display the list horizontally */
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-navigation li {
+  display: inline-block; /* Display list items horizontally */
+  margin: 0 10px; /* Add some spacing between list items */
+  cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.dashboard-navigation li:hover {
+  text-decoration: underline; /* Underline the tab text on hover */
+}
+
+.dashboard {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+nav li {
+  cursor: pointer;
+  margin-right: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+nav li:hover {
+  background-color: #f0f0f0;
+}
+
+nav li.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.arrow {
+  margin-left: 5px;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.widget {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.header-links {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.header {
+  background-color: #f2f2f2; /* Light gray background color for the header */
+  padding: 10px;
+}
+
+.dashboard-container {
+  background-color: #ffffff; /* White background color for the dashboard */
+  padding: 20px;
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+.footer {
+  background-color: #f2f2f2; /* Light gray background color for the footer */
+  padding: 10px;
+}
+
+.dashboard-title {
+  font-family: 'Your Chosen Font', sans-serif; /* Replace 'Your Chosen Font' with the desired font family */
+  font-size: 24px; /* Adjust the font size as needed */
+  font-weight: bold; /* Make the text bold */
+  margin-left: 20px; /* Add margin to position it away from the left edge */
+}
+
+.brand-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 10px; /* Adjust the margin as needed */
+  font-size: 28px; /* Adjust the font size as needed */
+  font-family: 'Arial', sans-serif; /* Specify the font family */
+  font-weight: bold; /* Optionally, set the font weight */
+}
