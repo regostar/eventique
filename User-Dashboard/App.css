@@ -1,21 +1,21 @@
 .dashboard-navigation {
-  text-align: center; /* Center-align the navigation links */
+  text-align: center; /* Center-aligning the navigation links */
 }
 
 .dashboard-navigation ul {
-  display: inline-block; /* Display the list horizontally */
+  display: inline-block; /* Displaying the list horizontally */
   padding: 0;
   margin: 0;
 }
 
 .dashboard-navigation li {
-  display: inline-block; /* Display list items horizontally */
-  margin: 0 10px; /* Add some spacing between list items */
-  cursor: pointer; /* Change cursor to pointer for better UX */
+  display: inline-block; /* Displaying list items horizontally */
+  margin: 0 10px; /* Adding some spacing between list items */
+  cursor: pointer; 
 }
 
 .dashboard-navigation li:hover {
-  text-decoration: underline; /* Underline the tab text on hover */
+  text-decoration: underline; /* Underlining the tab text on hover */
 }
 
 .dashboard {
@@ -98,7 +98,7 @@ nav li.active {
 .dashboard-container {
   background-color: #ffffff; /* White background color for the dashboard */
   padding: 20px;
-  margin-top: 20px; /* Adjust the margin as needed */
+  margin-top: 20px; 
 }
 
 .footer {
@@ -107,18 +107,18 @@ nav li.active {
 }
 
 .dashboard-title {
-  font-family: 'Your Chosen Font', sans-serif; /* Replace 'Your Chosen Font' with the desired font family */
-  font-size: 24px; /* Adjust the font size as needed */
-  font-weight: bold; /* Make the text bold */
-  margin-left: 20px; /* Add margin to position it away from the left edge */
+  font-family: Arial, sans-serif; 
+  font-size: 24px; 
+  font-weight: bold; 
+  margin-left: 20px; /* Adding margin to position it away from the left edge */
 }
 
 .brand-title {
   position: absolute;
   top: 0;
   left: 0;
-  margin: 10px; /* Adjust the margin as needed */
-  font-size: 28px; /* Adjust the font size as needed */
-  font-family: 'Arial', sans-serif; /* Specify the font family */
-  font-weight: bold; /* Optionally, set the font weight */
+  margin: 10px; 
+  font-size: 28px; 
+  font-family: 'Arial', sans-serif; 
+  font-weight: bold; 
 }
