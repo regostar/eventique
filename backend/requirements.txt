@@ -1,3 +1,4 @@
 djangorestframework==3.15.0
 markdown==3.6
 django-filter==24.1
+django-cors-headers==4.3.1
