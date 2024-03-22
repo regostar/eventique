@@ -1,6 +1,7 @@
 # Eventique
 ### AI Enhanced Event Planning
 
+UI Mockup : https://app.visily.ai/projects/8d6cb7f9-cd2c-41c4-b292-5667f0c05273/boards/785166
 
 #### Product Vision:
 
