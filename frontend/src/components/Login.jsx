@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import girlImage from '../assets/login/girl.jpeg'; 
+import axios from 'axios';
+
+import girlImage from '../assets/login/girl.jpeg';
 import calendarImage from '../assets/login/calendar.jpeg';
 
+import {apiEndpoints} from '../utils/apiEndpoints'; 
+
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+  const inputFieldClass = 'px-4 py-2 rounded-md shadow-md outline-none';
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+  const handleSignIn = async () => {
+    const resp = await axios.post(apiEndpoints.LOGIN, {
+      email,
+      password
+    },{
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-  const handleSignIn = () => {
-    // Implement sign in functionality here using username and password
-    // Write the authentication code for user name password entered and link to Dashboard page
-  };
+    // if successful navigate to home page
+  }
 
   return (
     <>
@@ -34,19 +40,27 @@ export default function Login() {
           <div className='flex justify-center items-center'>
             <input
               type='text'
-              className='px-4 py-2 rounded-md shadow-md border-none'
-              placeholder='Username'
+              className={inputFieldClass}
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className='flex justify-center items-center'>
             <input
               type='password'
-              className='px-4 py-2 rounded-md shadow-md border-none'
+              className={inputFieldClass}
               placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className='flex justify-center items-center'>
-            <button className='rounded-md shadow-s hover:shadow-md p-2 '>
+            <button
+              type='button'
+              className='flex justify-center align-center rounded-md text-white bg-purple-500 hover:shadow-md p-2'
+              onClick={handleSignIn}
+            >
               Sign in
             </button>
           </div>
@@ -54,7 +68,7 @@ export default function Login() {
             <div className='flex gap-1 text-sm'>
               <p className=''>Don't have an account?</p>
               <Link to='/signup'>
-                <p className='text-gray-400 hover:shadow-md hover:text-purple-400'>
+                <p className='text-gray-400 hover:border-b-2 hover:border-purple-500 px-1 transition-all duration-10'>
                   Create account
                 </p>
               </Link>
