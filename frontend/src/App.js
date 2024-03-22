@@ -6,7 +6,7 @@ import Signup from './components/Signup';
 function App() {
   return (
     <Routes>
-      <Route path='/' exact element={<Login/>} />
+      <Route path='/login' exact element={<Login/>} />
       <Route path='/signup' element={<Signup/>} />
       {/* <Route path='/dashboard' element={<Dashboard/>} /> */}
     </Routes>
