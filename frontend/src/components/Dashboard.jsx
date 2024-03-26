@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import EventDetailsHome from './EventDetailsHome';
+
+import { FaUserCircle } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
+
 import profileIcon from '../assets/dashboard/profile-icon.png';
 import createEventIcon from '../assets/dashboard/create-event-icon.png';
 
@@ -95,10 +99,14 @@ function App() {
         <h1 style={{ fontWeight: 'bold', fontSize: '48px', marginTop: '0' }}>Eventique</h1>
       </header>
 
-      <nav style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+      <nav className='flex justify-center items-center gap-1' style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
         {/* should redirect to chat bot */}
-        <Link to="/"><img src={createEventIcon} alt="Create Event" style={{ width: '30px', height: '30px', marginRight: '10px' }} /></Link>
-        <Link to="/profile"><img src={profileIcon} alt="My Profile" style={{ width: '30px', height: '30px', marginRight: '10px' }} /></Link>
+        <Link className='text-white font-bold bg-purple-500 flex items-center justify-center w-8 h-8 p-1 rounded-md' to="/">
+          <IoMdAdd/>
+        </Link>
+        <Link className='flex items-center justify-center w-12 h-12' to="/profile">
+          <FaUserCircle fontSize={21}/>
+        </Link>
       </nav>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
