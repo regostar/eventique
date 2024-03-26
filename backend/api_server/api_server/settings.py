@@ -135,11 +135,10 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'user_auth_api.AppUser'
 
-
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 # enable only in local
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-    'http://127.0.0.1',
-    'http://0.0.0.0',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost',
+#     'http://127.0.0.1',
+#     'http://0.0.0.0',
+# ]
