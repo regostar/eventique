@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import girlImage from '../assets/login/girl.jpeg'; 
-import calendarImage from '../assets/login/calendar.jpeg';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { isValidEmail, isValidPassword } from '../utils/inputValidations';
+import { apiEndpoints } from '../utils/apiEndpoints';
+
+import girlImage from '../assets/login/girl.jpeg'; 
+import calendarImage from '../assets/login/calendar.jpeg';
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -16,7 +19,7 @@ const Signup = () => {
 
     const inputFieldClass = 'px-4 py-2 rounded-md shadow-md outline-none';
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
         if (
             !isValidEmail(email) ||
             !username || 
@@ -32,6 +35,34 @@ const Signup = () => {
             setErrorMessage('Passwords do not match');
             return;
         }
+
+        let resp = null;
+
+        try
+        {
+            resp = await axios.post(apiEndpoints.SIGNUP, {
+                name: username,
+                email,
+                password
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+        catch(error){
+            setErrorMessage("Couldn't create account, please try again");
+            setTimeout(() => setErrorMessage(''), 3000);
+            return;
+        }
+
+        if(resp?.data)
+        {
+            //navigate to homepage if the account has been created 
+            // maybe show some msg and store the details in localstorage before navigating
+            navigate('/');
+        }
     };
 
     return (
@@ -39,7 +70,7 @@ const Signup = () => {
             <div className="flex justify-center items-center w-1/3 p-2">
                 <img src={girlImage} alt='girl thinking' />
             </div>
-            <div className="flex flex-col justify-start items-center gap-2">
+            <div className="flex flex-col justify-center items-center gap-2">
                 <p className="text-2xl">EVENTIQUE</p>
                 <div className='flex'>
                     <p className='text-md'>Create your account</p>
