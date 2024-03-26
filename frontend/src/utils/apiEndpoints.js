@@ -1,3 +1,5 @@
+const HOST = 'http://localhost'
+const PORT = 8000
 export const apiEndpoints = {
-    'LOGIN': ''
+    'LOGIN': `${HOST}:${PORT}/api/login`
 }
