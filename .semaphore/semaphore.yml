@@ -1,0 +1,32 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: Build
+    task:
+      jobs:
+        - name: Pip
+          commands:
+            - sem-version python 3.11
+            - checkout
+            - mkdir .pip_cache
+            - cache restore
+            - cd backend
+            - pip install --cache-dir .pip_cache -r requirements.txt
+            - cache store
+      env_vars:
+        - name: PGDATABASE
+          value: eventique
+        - name: PGUSER
+          value: eventique_owner
+        - name: PGPASSWORD
+          value: M1LvHroJy9PW
+        - name: PGHOST
+          value: ep-yellow-hall-a5y5g8pp.us-east-2.aws.neon.tech
+        - name: PGPORT
+          value: '5432'
+        - name: GOOGLE_API_KEY
+          value: AIzaSyCaB2OdFhpN8KyyATQrDePZt1yuSvsbPLI
