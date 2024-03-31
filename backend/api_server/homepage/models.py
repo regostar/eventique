@@ -4,6 +4,7 @@ from user_auth_api.models import AppUser
 # Event model
 class Event(models.Model):
     prompt = models.TextField()
+    description = models.TextField()
     title = models.CharField(max_length=255)
     purpose = models.TextField()
     start_time = models.DateTimeField()
