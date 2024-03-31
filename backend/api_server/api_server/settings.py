@@ -79,13 +79,51 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# Add these at the top of your settings.py
 
+from os import getenv
+
+from dotenv import load_dotenv
+load_dotenv()
+
+print("If .env is ready you will see the database name here -")
+print(getenv('PGDATABASE'))
+
+# Replace the DATABASES section of your settings.py with this
+
+DATABASES = {
+
+  'default': {
+
+    'ENGINE': 'django.db.backends.postgresql',
+
+    'NAME': getenv('PGDATABASE'),
+
+    'USER': getenv('PGUSER'),
+
+    'PASSWORD': getenv('PGPASSWORD'),
+
+    'HOST': getenv('PGHOST'),
+
+    'PORT': getenv('PGPORT', 5432),
+
+    'OPTIONS': {
+
+      'sslmode': 'require',
+
+    },
+
+    'DISABLE_SERVER_SIDE_CURSORS': True,
+
+  }
+
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

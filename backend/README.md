@@ -1,0 +1,1 @@
+postgresql://eventique_owner:**********@ep-yellow-hall-a5y5g8pp.us-east-2.aws.neon.tech/eventique?sslmode=require
