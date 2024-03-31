@@ -15,22 +15,24 @@ class AppUserManager(BaseUserManager):
 		user.save()
 		return user
 	
-	# def create_superuser(self, email, password=None):
-	# 	# as of now we will only create this on terminal or via db
-	# 	if not email:
-	# 		raise ValueError('An email is required.')
-	# 	if not password:
-	# 		raise ValueError('A password is required.')
-	# 	user = self.create_user(email, password)
-	# 	user.is_superuser = True
-	# 	user.save()
-	# 	return user
+	def create_superuser(self, email, password=None):
+		# as of now we will only create this on terminal or via db
+		if not email:
+			raise ValueError('An email is required.')
+		if not password:
+			raise ValueError('A password is required.')
+		user = self.create_user(email, password)
+		user.is_superuser = True
+		user.is_staff = True
+		user.save()
+		return user
 
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
 	email = models.EmailField(max_length=50, unique=True, db_index=True)
 	name = models.CharField(max_length=50)
+	is_staff = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 
 	USERNAME_FIELD = 'email'
