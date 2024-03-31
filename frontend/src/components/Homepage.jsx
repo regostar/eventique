@@ -1,38 +1,34 @@
 import React from 'react';
-<<<<<<< Updated upstream
-import Sidebar from './Sidebar'; 
-=======
-import Sidebar from './Sidebar';
-import { CgProfile } from "react-icons/cg";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { FaPlus } from "react-icons/fa";
->>>>>>> Stashed changes
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 
-function App() {
+import Sidebar from './Sidebar';
+import Navbar from './Navbar';
+
+const aspectRatio = window.screen.width/window.screen.height;
+
+function Homepage() {
   return (
-    <div className="relative">
-      <div className="absolute top-0 right-0">
-        <div className="flex items-center space-x-4 mt-4 mr-4">
-          <div className="bg-purple-600 text-white px-4 py-2 font-bold flex items-center">
-            <FaPlus className="mr-1" />
-            <span>Create</span>
-          </div>
-          <div className="inline-block">
-            <CgProfile className="w-8 h-8 mr-0.5" />
-          </div>
-          <div className="inline-block">
-            <IoMdArrowDropdown className="w-6 h-6 mt-1 mr-6" />
+      <div className='flex'>
+        <Sidebar />
+        <div className='flex-1 h-full flex flex-col px-4 py-2 gap-4'>
+          <Navbar/>
+          <div className=''>
+            <FullCalendar
+            aspectRatio={aspectRatio + 0.25}
+              plugins={[dayGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,dayGridWeek,dayGridDay',
+              }}
+              initialView='dayGridMonth'
+            />
           </div>
         </div>
       </div>
-      <div className="flex items-start">
-        <Sidebar />
-        <span className="text-black px-4 py-2 font-bold ml-2 mt-4 text-2xl">
-          Calendar
-        </span>
-      </div>
-    </div>
   );
 }
 
-export default App;
+export default Homepage;
