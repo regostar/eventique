@@ -13,10 +13,12 @@ from api_server.settings import model
 def get_event(request):
     try:
         prompt = request.GET.get('prompt')
-        # start_time = data.get('start_time')  # Optional
-        # end_time = data.get('end_time')  # Optional
+        # start_time = request.GET.get('start_time')  # Optional
+        # end_time = request.GET.get('end_time')  # Optional
 
-        response = model.generate_content(prompt)
+        formatter_llm = " Add date and time for each task of this event "
+
+        response = model.generate_content(prompt + formatter_llm)
         print(response.text)
 
         return JsonResponse({'response': response.text}, status=201)
