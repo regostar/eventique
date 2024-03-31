@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 # Add these at the top of your settings.py
 
 from os import getenv
-
+import google.generativeai as genai
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -180,3 +180,14 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'http://127.0.0.1',
 #     'http://0.0.0.0',
 # ]
+
+GOOGLE_API_KEY=getenv('GOOGLE_API_KEY')
+
+genai.configure(api_key=GOOGLE_API_KEY)
+
+# for m in genai.list_models():
+#   if 'generateContent' in m.supported_generation_methods:
+#     print(m.name)
+
+model = genai.GenerativeModel('gemini-pro')
+print("gemini-pro-latest Model is initialized")
