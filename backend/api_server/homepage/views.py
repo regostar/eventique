@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import json
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -25,14 +25,15 @@ def get_event(request):
 
     except Exception as e:
         print("Error - ", str(e))
-        return JsonResponse({'error': str(e)}, status=400)
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 @require_http_methods(["POST"])
 def create_event(request):
     try:
+        print("came here")
         # Assuming the request body is in JSON format
-        data = request.json()
+        data = json.loads(request.body)
         prompt = data['prompt']
         description = data['description']
         start_time = data.get('start_time')  # Optional
@@ -45,10 +46,12 @@ def create_event(request):
             end_time = parse_datetime(end_time)
 
         # Create and save the new event
-        event = Event(prompt=prompt, description=description, start_time=start_time, end_time=end_time)
+        # get user_id from request and then save
+        event = Event(prompt=prompt, description=description, start_time=start_time, end_time=end_time, user_id=1)
         event.save()
 
         return JsonResponse({'message': 'Event created successfully', 'id': event.id}, status=201)
 
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
+        print(str(e))
+        return JsonResponse({'error': str(e)}, status=500)
