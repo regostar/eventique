@@ -44,6 +44,10 @@ Hola! your server should be up on default 3000 port now
 
 
 
+Postgre DB :- 
 
+https://console.neon.tech/app/projects
+
+Connection String :- 
 
 postgresql://eventique_owner:**********@ep-yellow-hall-a5y5g8pp.us-east-2.aws.neon.tech/eventique?sslmode=require
