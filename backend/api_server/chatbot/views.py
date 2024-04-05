@@ -1,4 +1,3 @@
-from django.shortcuts import render
 import json
 
 from django.http import JsonResponse
@@ -7,10 +6,8 @@ from django.utils.dateparse import parse_datetime
 from .models import Event
 from api_server.settings import model
 
-
-
 @require_http_methods(["GET"])
-def get_event(request):
+def generate_plan(request):
     try:
         prompt = request.GET.get('prompt')
         # start_time = request.GET.get('start_time')  # Optional
@@ -27,11 +24,10 @@ def get_event(request):
         print("Error - ", str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
-
+"""
 @require_http_methods(["POST"])
-def create_event(request):
+def accept_plan(request):
     try:
-        print("came here")
         # Assuming the request body is in JSON format
         data = json.loads(request.body)
         prompt = data['prompt']
@@ -55,3 +51,4 @@ def create_event(request):
     except Exception as e:
         print(str(e))
         return JsonResponse({'error': str(e)}, status=500)
+"""

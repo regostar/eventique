@@ -17,7 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from homepage import views
 
 # router = routers.DefaultRouter()
 
@@ -28,8 +27,8 @@ from homepage import views
 urlpatterns = [
     # path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api/', include('user_auth_api.urls')),
-    path('homepage/', include('homepage.urls')),
+    path('api/auth/', include('user_auth_api.urls')),
+    path('/api/chatbot/', include('chatbot.urls'))
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

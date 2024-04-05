@@ -12,13 +12,13 @@ class EventTestCase(TestCase):
             'description': 'This is a test description.'
         }
 
-    def test_get_event(self):
-        response = self.client.get('/homepage/event/new/', follow=True)
+    def test_generate_plan(self):
+        response = self.client.get('/api/chatbot/generate-plan/', follow=True)
         # without variable prompt
         self.assertEqual(response.status_code, 500)
 
-    # def test_create_event(self):
-    #     response = self.client.post('/homepage/event/create', follow=True)
+    # def test_accept_plan(self):
+    #     response = self.client.post('/api/chatbot/accept-plan', follow=True)
     #     self.assertEqual(response.status_code, 201)
 
     # def test_create_event_with_dates(self):

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'user_auth_api',
-    'homepage',
+    'chatbot'
 ]
 
 MIDDLEWARE = [
