@@ -191,3 +191,41 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 model = genai.GenerativeModel('gemini-pro')
 print("gemini-pro-latest Model is initialized")
+
+
+# Logging Configuration
+
+# Clear prev config
+LOGGING_CONFIG = None
+
+import logging.config
+
+# Get loglevel from env
+LOGLEVEL = getenv('DJANGO_LOGLEVEL', 'info').upper()
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'file': {
+            # 'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'app.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': LOGLEVEL,
+            'handlers': ['console','file'],
+        },
+    },
+})
