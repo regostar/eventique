@@ -51,3 +51,9 @@ https://console.neon.tech/app/projects
 Connection String :- 
 
 postgresql://eventique_owner:**********@ep-yellow-hall-a5y5g8pp.us-east-2.aws.neon.tech/eventique?sslmode=require
+
+docker run --env-file .env backend-eventique
+
+docker --env-file .env run --name backend-eventique -p 8000:8000  -d api_server
+
+docker run --env-file .env  --name backend-eventique -p 8000:8000  -d api_server
