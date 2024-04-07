@@ -1,4 +1,13 @@
-djangorestframework==3.15.0
-markdown==3.6
+asgiref==3.8.1
+Django==5.0.3
 django-filter==24.1
+djangorestframework==3.15.0
+Markdown==3.6
+sqlparse==0.4.4
+tzdata==2024.1
 django-cors-headers==4.3.1
+psycopg2==2.9.9
+google-generativeai==0.4.1
+gunicorn==21.2.0
+python-dotenv==1.0.1
+gunicorn==21.2.0

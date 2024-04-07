@@ -12,13 +12,19 @@ from user_auth_api.validations import custom_validation, validate_email, validat
 class UserRegister(APIView):
 	permission_classes = (permissions.AllowAny,)
 	def post(self, request):
-		clean_data = custom_validation(request.data)
-		serializer = UserRegisterSerializer(data=clean_data)
-		if serializer.is_valid(raise_exception=True):
-			user = serializer.create(clean_data)
-			if user:
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return Response(status=status.HTTP_400_BAD_REQUEST)
+		try:
+			clean_data = custom_validation(request.data)
+			
+			serializer = UserRegisterSerializer(data=clean_data)
+			print("hi")
+			if serializer.is_valid(raise_exception=True):
+				user = serializer.create(clean_data)
+				if user:
+					return Response(serializer.data, status=status.HTTP_201_CREATED)
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		except Exception as e:
+			print(str(e))
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogin(APIView):
