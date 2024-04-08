@@ -90,6 +90,13 @@ docker push us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/bac
 
 ------------------------------
 
+Frontend docker :-
+
+docker build -t us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-frontend/frontend-web -f Dockerfile --platform linux/x86_64 .
+
+docker push us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-frontend/frontend-web
+
+
 export IMAGE_TAG=us-south1-docker.pkg.dev/CodeSnap/eventique-backend/backend-web
 
 docker build -t us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/backend-web -f Dockerfile --platform linux/x86_64 .
@@ -101,3 +108,5 @@ docker run --env-file .env backend-eventique
 docker --env-file .env run --name backend-eventique -p 8000:8000  -d api_server
 
 docker run --env-file .env  --name backend-eventique -p 8000:8000  -d api_server
+
+docker tag eventique-backend regostar/eventique-backend
