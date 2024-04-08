@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from os import getenv
+import google.generativeai as genai
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+if getenv('ALLOWED_HOST'):
+    ALLOWED_HOSTS.append(getenv('ALLOWED_HOST', '127.0.0.1'))
 
 # Application definition
 
@@ -88,10 +95,7 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 # }
 # Add these at the top of your settings.py
 
-from os import getenv
-import google.generativeai as genai
-from dotenv import load_dotenv
-load_dotenv()
+
 
 print("If .env is ready you will see the database name here -")
 print(getenv('PGDATABASE'))
@@ -173,13 +177,15 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'user_auth_api.AppUser'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS=[getenv('TRUSTED_ORIGIN', 'http://127.0.0.1')]
+# CORS_ORIGIN_ALLOW_ALL = True
 # enable only in local
 # CORS_ALLOWED_ORIGINS = [
 #     'http://localhost',
 #     'http://127.0.0.1',
 #     'http://0.0.0.0',
 # ]
+CSRF_TRUSTED_ORIGINS = [getenv('TRUSTED_ORIGIN', 'http://127.0.0.1')]
 
 GOOGLE_API_KEY=getenv('GOOGLE_API_KEY')
 

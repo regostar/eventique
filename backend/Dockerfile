@@ -14,10 +14,10 @@ RUN pip freeze
 COPY . code
 WORKDIR /code
 
-EXPOSE 8000
+EXPOSE 8080
 
 # runs the production server
 ENTRYPOINT ["python", "api_server/manage.py"]
-CMD ["runserver", "0.0.0.0:8000"]
+CMD ["runserver", "0.0.0.0:8080"]
 # CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "api_server.wsgi:application"]
 # TODO- Need to run using gunicorn
