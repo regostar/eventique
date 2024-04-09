@@ -12,7 +12,7 @@ const sidebarOptions = [
     linkTo: '',
   },
   {
-    name: 'Generate Event',
+    name: 'plan event',
     icon: <BsStars className='w-6 h-6' />,
     linkTo: '/event-gen',
   },
@@ -24,7 +24,7 @@ const isActiveStyle =
   'flex items-center gap-2 rounded-md bg-purple-500 text-white py-2 px-4 font-bold mt-4 text-center relative';
 
 
-function Sidebar() {
+function Sidebar({setActivePageName}) {
   return (
     <div className='bg-gray-200 rounded-lg mx-3 my-2 flex flex-col overflow-y-scroll hide-scrollbar'>
       <div className='flex items-center justify-start py-2'>
@@ -43,10 +43,11 @@ function Sidebar() {
               to={option.linkTo}
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
-            }
+              }
+              onClick={(e) => setActivePageName(option.name)}
             >
               {option.icon}
-              <span className='text-lg'>{option.name}</span>
+              <span className='text-lg capitalize'>{option.name}</span>
             </NavLink>
             // </div>
           );
