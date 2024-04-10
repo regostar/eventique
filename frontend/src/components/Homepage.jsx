@@ -10,11 +10,11 @@ import Chatpage from './Chatpage';
 function Homepage() {
   const [activePageName, setActivePageName] = useState('calendar')
   return (
-    <div className='flex'>
+    <div className='flex h-screen'>
       <Sidebar setActivePageName = {setActivePageName}/>
       <div className='flex-1 h-full flex flex-col px-4 py-2 gap-4'>
         <Navbar pageName = {activePageName}/>
-        <div>
+        <div className='relative h-screen'>
           <Routes>
             <Route path='' element={<Calendar />} />
             <Route path='/event-gen' element={<Chatpage />} />
