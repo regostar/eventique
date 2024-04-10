@@ -1,30 +1,60 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import girlImage from '../assets/login/girl.jpeg';
 import calendarImage from '../assets/login/calendar.jpeg';
 
-import {apiEndpoints} from '../utils/apiEndpoints'; 
+import { apiEndpoints } from '../utils/apiEndpoints';
+import { isValidEmail, isValidPassword } from '../utils/inputValidations';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [wrongCreds, setWrongCreds] = useState(false);
+  const navigate = useNavigate();
 
   const inputFieldClass = 'px-4 py-2 rounded-md shadow-md outline-none';
+  let errorMessage = '';
+
+  if (isInvalid) errorMessage = 'please fill all the details';
+  else if (wrongCreds) errorMessage = 'invalid email or password';
 
   const handleSignIn = async () => {
-    const resp = await axios.post(apiEndpoints.LOGIN, {
-      email,
-      password
-    },{
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    if (!isValidEmail(email) || !isValidPassword(password)) {
+      setIsInvalid(true);
+      //turn it off after some time
+      setTimeout(() => {
+        setIsInvalid(false);
+      }, 3000);
 
-    // if successful navigate to home page
-  }
+      return;
+    }
+    let resp = null;
+    try {
+      resp = await axios.post(
+        apiEndpoints.LOGIN,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } catch (error) {}
+
+    if (resp?.data) navigate('/');
+    else {
+      setWrongCreds(true);
+      setTimeout(() => {
+        setWrongCreds(false);
+      }, 3000);
+    }
+  };
 
   return (
     <>
@@ -55,6 +85,11 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
+          <p className='text-red-500 text-lg transition-all duration-150 ease-in'>
+            {errorMessage}
+          </p>
+
           <div className='flex justify-center items-center'>
             <button
               type='button'

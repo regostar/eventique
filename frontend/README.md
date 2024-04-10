@@ -68,3 +68,25 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+To build image -
+
+docker build -t eventique-frontend:v1 . 
+
+To run :- 
+
+docker run  --name FE2 -dp 3000:3000  -d eventique-frontend:v2
+
+ignore :-
+
+docker run -d -it –rm -p [host_port]:[container_port] –name [container_name] [image_id/image_tag]
+
+docker run -d -it –rm -name eventique-frontend:v1
+
+docker run --env-file .env  --name backend-eventique -p 8000:8000  -d backend-eventique 
+
+docker run  --nameFE2 -p 8000:8000  -d eventique-frontend:v2
+
+docker run -dp 8000:3000 --name FE eventique-frontend:v1
