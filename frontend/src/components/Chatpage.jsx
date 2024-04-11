@@ -5,6 +5,7 @@ import { BiPaint } from 'react-icons/bi';
 import { PiLightbulb } from 'react-icons/pi';
 
 import PromptSuggestion from './PromptSuggestion';
+import Loader from './Loader';
 
 import { apiEndpoints } from '../utils/apiEndpoints';
 
@@ -27,24 +28,43 @@ const suggestions = [
 export default function Chatpage() {
   const [prompt, setPrompt] = useState('');
   const [plan, setPlan] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSendClick = async (e) => {
     const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
     let resp = null;
     try {
+      setLoading(true);
       resp = await axios.get(url);
     } catch (error) {
       console.log('error fetching event plan');
     }
 
-    if (resp?.data?.response)
-    {
+    setLoading(false);
+
+    if (resp?.data?.response) {
       console.log(resp?.data?.response);
       setPlan(
         resp?.data?.response.replace(' ', '&nbsp;').replace('\n', '<br>')
       );
     }
   };
+
+  let mainContent = '';
+  if (!loading) {
+    mainContent = !plan ? (
+      <div className='flex flex-col w-full px-4 gap-1 justify-items-start justify-center'>
+        {suggestions.map((option) => (
+          <PromptSuggestion option={option} setPrompt={setPrompt} />
+        ))}
+      </div>
+    ) : (
+      <div
+        className='overflow-y-auto'
+        dangerouslySetInnerHTML={{ __html: plan }}
+      />
+    );
+  } else mainContent = <Loader message={'Creating a plan ...'} />;
 
   return (
     <>
@@ -55,15 +75,7 @@ export default function Chatpage() {
               Go Ahead plan your Event!
             </p>
           </div>
-          {!plan ? (
-            <div className='flex flex-col w-full px-4 gap-1 justify-items-start justify-center'>
-              {suggestions.map((option, i) => (
-                <PromptSuggestion option={option} setPrompt={setPrompt} />
-              ))}
-            </div>
-          ) : (
-            <div className = "overflow-y-auto" dangerouslySetInnerHTML={{ __html: plan }} />
-          )}
+          {mainContent}
         </div>
         <div className='flex flex-1 absolute bottom-2 justify-center items-center w-full mt-auto p-2 border-2 rounded-lg border-purple-200 focus-within:shadow-md'>
           <input
