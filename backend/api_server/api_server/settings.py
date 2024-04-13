@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_auth_api',
     'chatbot',
-    'tasks'
+    'tasks',
+    'event',
 ]
 
 MIDDLEWARE = [
