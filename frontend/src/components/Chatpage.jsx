@@ -58,6 +58,45 @@ const testEvent = {
       description:
         'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
     },
+    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },
+    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },
+    {
+      title: 'Book catering',
+      start: '2023-07-01T09:00:00Z',
+      end: '2023-07-01T17:00:00Z',
+      description:
+        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
+    },
   ],
 }
 
