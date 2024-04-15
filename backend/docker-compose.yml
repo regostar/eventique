@@ -1,0 +1,14 @@
+version: '1.2'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    # command: python api_server/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env
