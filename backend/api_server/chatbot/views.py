@@ -10,15 +10,48 @@ from api_server.settings import model
 def generate_plan(request):
     try:
         prompt = request.GET.get('prompt')
-        # start_time = request.GET.get('start_time')  # Optional
-        # end_time = request.GET.get('end_time')  # Optional
+        
+        updated_prompt = f"""
+            Role: you are an event planner who creates most important tasks using event description.
+            
+            Context: event detail has been provided within triple backticks ```{prompt}```"""+"""
 
-        formatter_llm = " Add date and time for each task of this event "
+            Do the following Tasks
+            1. Extract event purpose and title
+            2. Extract date of event start and end if possible
+            3. List various tasks related to planning this event
+            4. Make tasks granular and arrange them in a sequence
+            5. remove trivial tasks, such as welcoming guests, enjoying party, cleaning mess after party
+            6. Detail each task by providing title, description, start datetime and end datetime
+            7. perform budgeting if required
 
-        response = model.generate_content(prompt + formatter_llm)
-        print(response.text)
+            Output format: 
+            valid JSON in the following format without triple backticks or written text outside json
+            {
+                'title': '<Event title>',
+                'purpose': <Event purpose>,
+                'start': <Event start time>,
+                'end': <Event end time>,
+                'tasks': [
+                    {
+                        'title': <Task title>,
+                        'description': <Task Description>,
+                        'start': <Task start time>,
+                        'end': <Task end time>
+                    },
+                    {
+                        ...
+                    }
+                ]
+            }
+            """
 
-        return JsonResponse({'response': response.text}, status=201)
+        response = model.generate_content(updated_prompt)
+        plan = response.text.replace('```','').replace('json','').strip()
+
+        plan = json.loads(plan)
+
+        return JsonResponse({'event': plan}, status=200)
 
     except Exception as e:
         print("Error - ", str(e))
