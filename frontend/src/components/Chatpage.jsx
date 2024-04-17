@@ -3,8 +3,8 @@ import axios from 'axios';
 import { RiQuestionMark, RiSendPlaneFill } from 'react-icons/ri';
 import { BiPaint } from 'react-icons/bi';
 import { PiLightbulb } from 'react-icons/pi';
-import { FaSyncAlt, FaPen, FaCheck } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; 
+import { FaSyncAlt, FaEraser, FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 import PromptSuggestion from './PromptSuggestion';
 import TaskOverview from './TaskOverview';
@@ -59,53 +59,34 @@ const testEvent = {
       end: '2023-07-01T17:00:00Z',
       description:
         'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
+    }
   ],
-}
+};
 
-const buttonsToShow = [
-  { name: 'Regenerate', icon: <FaSyncAlt />, color: 'text-purple-600' },
-  { name: 'Reprompt', icon: <FaPen />, color: 'text-gray-600' },
-  { name: 'Approve', icon: <FaCheck />, color: 'text-green-600' }
+const iconsBeforeSend = [
+  {
+    key: 'send',
+    name: 'Send',
+    icon: <RiSendPlaneFill className='w-9 h-9 p-2' />,
+  },
+];
+
+const iconsAfterSend = [
+  {
+    key: 'regenerate',
+    name: 'Regenerate',
+    icon: <FaSyncAlt className='w-5 h-5 text-purple-600' />,
+  },
+  {
+    key: 'reprompt',
+    name: 'Clear',
+    icon: <FaEraser className='w-5 h-5 text-gray-600' />,
+  },
+  {
+    key: 'approve',
+    name: 'Approve',
+    icon: <FaCheck className='w-5 h-5 text-green-600' />,
+  },
 ];
 
 export default function Chatpage() {
@@ -113,7 +94,7 @@ export default function Chatpage() {
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSendClick = async () => {
     const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
@@ -135,8 +116,8 @@ export default function Chatpage() {
   };
 
   const taskClickHandler = (taskIdx) => {
-    setSelectedTask({...plan?.tasks[taskIdx]})
-  }
+    setSelectedTask({ ...plan?.tasks[taskIdx] });
+  };
 
   const handleRegenerateClick = () => {
     console.log('Regenerate button clicked'); // dummy functionality for now since we have not confirmed on the API for this yet
@@ -149,7 +130,14 @@ export default function Chatpage() {
 
   const handleApproveClick = () => {
     console.log('Data saved to the database'); // dummy functionality  for now to save data to the database
-    navigate('/Homepage'); // redirecting to the homepage 
+    navigate(''); // redirecting to the homepage
+  };
+
+  const btnOnClicks = {
+    regenerate: handleRegenerateClick,
+    reprompt: handleRepromptClick,
+    approve: handleApproveClick,
+    send: handleSendClick,
   };
 
   let mainContent = '';
@@ -158,21 +146,12 @@ export default function Chatpage() {
       mainContent = (
         <div className='flex flex-col w-full px-4 gap-1 justify-items-start justify-center'>
           {suggestions.map((option, index) => (
-            <PromptSuggestion key={index} option={option} setPrompt={setPrompt} />
+            <PromptSuggestion
+              key={index}
+              option={option}
+              setPrompt={setPrompt}
+            />
           ))}
-          <div className='flex justify-center items-center w-full mt-64 p-2 border-2 rounded-lg border-purple-200 focus-within:shadow-md'>
-            <input
-              type='text'
-              className='outline-none p-2 flex-1'
-              placeholder='Describe your event...'
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-            />
-            <RiSendPlaneFill
-              className='w-9 h-9 p-2 cursor-pointer'
-              onClick={handleSendClick}
-            />
-          </div>
         </div>
       );
     } else {
@@ -187,31 +166,67 @@ export default function Chatpage() {
               clickHandler={(e) => taskClickHandler(idx)}
             />
           ))}
-          <div className='flex justify-around mt-4'>
-            {buttonsToShow.map((button, index) => (    
-              <div key={index} className='flex flex-col items-center mt-40'>
-                {/* redirecting a button for each item in the buttonsToShow array  */}
-                <button className={`icon-btn ${button.color}`} onClick={button.name === 'Reprompt' ? handleRepromptClick : (button.name === 'Regenerate' ? handleRegenerateClick : (button.name === 'Approve' ? handleApproveClick : null))}>{button.icon}</button> 
-                <span>{button.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
       );
     }
   } else mainContent = <Loader message={'Creating a plan ...'} />;
 
+  let buttonsToShow = '';
+  if (!plan) {
+    buttonsToShow = iconsBeforeSend.map((btn, i) => {
+      return (
+        <button
+          className='flex justify-center items-center'
+          title={btn.name}
+          key={i}
+          onClick={btnOnClicks[btn.key]}
+        >
+          {btn.icon}
+        </button>
+      );
+    });
+  } else {
+    buttonsToShow = iconsAfterSend.map((btn, i) => {
+      return (
+        <button
+          className='flex justify-center items-center transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110'
+          title={btn.name}
+          key={i}
+          onClick={btnOnClicks[btn.key]}
+        >
+          {btn.icon}
+        </button>
+      );
+    });
+  }
+
   return (
     <>
-      <div className='flex flex-col gap-5 h-full items-center px-4'>
-        <div className='flex flex-col w-full flex-1 gap-3'>
+      <div className='flex flex-col gap-5 h-full items-center justify-between px-4'>
+        <div className='flex flex-col w-full gap-3'>
           <div className='flex flex-col px-4 py-2 items-center justify-center'>
-            <p className='text-3xl text-gray-800 font-bold'>
-              Go Ahead plan your Event!
+            <p className='text-3xl text-gray-800 font-bold capitalize'>
+              {plan?.title || 'Go Ahead plan your Event!'}
             </p>
-            <TaskPreviewModal task={selectedTask} setSelectedTask={setSelectedTask}/>
+            <TaskPreviewModal
+              task={selectedTask}
+              setSelectedTask={setSelectedTask}
+            />
           </div>
           {mainContent}
+        </div>
+        <div className='flex justify-center items-center w-full gap-1 p-2 border-2 rounded-lg border-purple-200 focus-within:shadow-md'>
+          <input
+            type='text'
+            className={`outline-none p-2 flex-1 hover:cursor-no-drop`}
+            disabled = {!!plan}
+            placeholder={plan ? 'X Disabled X' : 'Describe your event...'}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+          <div className='flex justify-center items-center gap-4'>
+            {buttonsToShow}
+          </div>
         </div>
       </div>
     </>
