@@ -12,6 +12,7 @@ blocks:
           commands: []
         - name: Installation
           commands:
+            - cd frontend
             - npm install
         - name: running the app
           commands:
