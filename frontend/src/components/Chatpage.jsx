@@ -130,7 +130,7 @@ export default function Chatpage() {
 
   const handleApproveClick = () => {
     console.log('Data saved to the database'); // dummy functionality  for now to save data to the database
-    navigate(''); // redirecting to the homepage
+    navigate('/'); // redirecting to the homepage
   };
 
   const btnOnClicks = {
