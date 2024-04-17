@@ -10,6 +10,9 @@ import PromptSuggestion from './PromptSuggestion';
 import TaskOverview from './TaskOverview';
 import TaskPreviewModal from './TaskPreviewModal';
 
+// Use the test Data when needed
+// import { testEvent } from '../testData';
+
 import Loader from './Loader';
 import { apiEndpoints } from '../utils/apiEndpoints';
 
@@ -28,40 +31,6 @@ const suggestions = [
     icon: <PiLightbulb className={iconCSS} />,
   },
 ];
-
-const testEvent = {
-  title: 'abc',
-  tasks: [
-    {
-      title: 'Find Venue',
-      start: '2023-07-02T09:00:00Z',
-      description:
-        'Look for a suitable venue that can accommodate 15 guests and is within the budget.',
-      end: '2023-07-03T17:00:00Z',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    },
-    {
-      title: 'Book catering',
-      start: '2023-07-01T09:00:00Z',
-      end: '2023-07-01T17:00:00Z',
-      description:
-        'Contact caterers and finalize vegetarian meal for 15 guests, ensuring it fits within the budge.',
-    }
-  ],
-};
 
 const iconsBeforeSend = [
   {
@@ -96,31 +65,34 @@ export default function Chatpage() {
   const [selectedTask, setSelectedTask] = useState(null);
   const navigate = useNavigate();
 
-  const handleSendClick = async () => {
-    const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
+  const fetchNSetPlan = async (url) => {
     let resp = null;
     try {
       setLoading(true);
-      // resp = await axios.get(url);
+      resp = await axios.get(url);
     } catch (error) {
       console.log('error fetching event plan');
     }
 
     setLoading(false);
 
-    // if (resp?.data) {
-    //   console.log(resp?.data);
-    //   setPlan(resp?.data?.event);
-    // }
-    setPlan(testEvent);
+    if (resp?.data) {
+      setPlan(resp?.data?.event);
+    }
+  };
+
+  const handleSendClick = async () => {
+    const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
+    await fetchNSetPlan(url);
+  };
+
+  const handleRegenerateClick = async () => {
+    const url = apiEndpoints.REGEN_EVENT.replace('<PROMPT>', prompt);
+    await fetchNSetPlan(url);
   };
 
   const taskClickHandler = (taskIdx) => {
     setSelectedTask({ ...plan?.tasks[taskIdx] });
-  };
-
-  const handleRegenerateClick = () => {
-    console.log('Regenerate button clicked'); // dummy functionality for now since we have not confirmed on the API for this yet
   };
 
   const handleRepromptClick = () => {
@@ -128,8 +100,16 @@ export default function Chatpage() {
     setPlan(null);
   };
 
-  const handleApproveClick = () => {
-    console.log('Data saved to the database'); // dummy functionality  for now to save data to the database
+  const handleApproveClick = async () => {
+    const url = apiEndpoints.APPROVE_PLAN;
+    try {
+      await axios.post(url, plan);
+    } catch (error) {
+      console.log('Error approving plan');
+      return;
+    }
+
+    console.log('Data saved to the database');
     navigate('/'); // redirecting to the homepage
   };
 
@@ -219,7 +199,7 @@ export default function Chatpage() {
           <input
             type='text'
             className={`outline-none p-2 flex-1 hover:cursor-no-drop`}
-            disabled = {!!plan}
+            disabled={!!plan}
             placeholder={plan ? 'X Disabled X' : 'Describe your event...'}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
