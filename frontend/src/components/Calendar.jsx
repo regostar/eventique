@@ -9,6 +9,8 @@ import moment from 'moment';
 import { apiEndpoints } from '../utils/apiEndpoints';
 import TaskPreviewModal from './TaskPreviewModal';
 
+import { testEvent  } from '../testData';
+
 const aspectRatio = window.screen.width / window.screen.height;
 
 export default function Calendar() {
@@ -63,7 +65,7 @@ export default function Calendar() {
     <>
       <TaskPreviewModal task={selectedTask} setSelectedTask={setSelectedTask} />
       <FullCalendar
-        events={tasks} //adds tasks to calendar
+        events={testEvent?.tasks} //adds tasks to calendar
         eventContent={renderEventContent} //allows to custom set task display format on calendar
         aspectRatio={aspectRatio + 0.25}
         plugins={[dayGridPlugin, interactionPlugin]}
