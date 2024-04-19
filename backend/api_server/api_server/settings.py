@@ -174,7 +174,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 #   if 'generateContent' in m.supported_generation_methods:
 #     print(m.name)
 
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("gemini-1.0-pro-latest")
 print("gemini-pro-latest Model is initialized")
 
 
@@ -217,6 +217,7 @@ logging.config.dictConfig(
     }
 )
 
+MAX_OUTPUT_TOKENS = 1000
 
 ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = []
