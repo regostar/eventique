@@ -5,14 +5,29 @@ from django.views.decorators.http import require_http_methods
 from django.utils.dateparse import parse_datetime
 from .models import Event, Task
 from django.contrib.auth.decorators import login_required
-from api_server.settings import model
+from api_server.settings import model, MAX_OUTPUT_TOKENS
 
 # @login_required
 @require_http_methods(["GET"])
 def generate_plan(request):
+    """
+    prompt
+    history - json
+      history: [
+        {
+            role: "user",  //inputed by user
+            parts: "I want you to act like a Regular Show Character",
+        },
+        {
+            role: "model",  // outputed by LLM in response to the previous user input
+            parts: "Okay",
+        }]
+    """
     try:
         prompt = request.GET.get('prompt')
         reprompt = request.GET.get('reprompt', False)
+        # if true, history should be there
+        history = request.GET.get('history', [])
         
         updated_prompt = f"""
             Role: you are an event planner who creates most important tasks using event description.
@@ -48,18 +63,30 @@ def generate_plan(request):
                 ]
             }
             """
+        if reprompt:
+            updated_prompt += "Do it differently"
         retry_ctr = 10
         while(retry_ctr > 0):
             try:
-                response = model.generate_content(updated_prompt)
-                plan = response.text.replace('```','').replace('json','').strip()
+                text_response = []
+                chat = model.start_chat(
+                        history=history,
+                        # "generationConfig": {
+                        #     "maxOutputTokens": MAX_OUTPUT_TOKENS,
+                        # },
+                        )
+                responses = chat.send_message(updated_prompt, stream=False)
+                # response = model.generate_content(updated_prompt)
+                for chunk in responses:
+                    text_response.append(chunk.text)
+                plan = text_response[-1].replace('```','').replace('json','').strip()
                 plan = json.loads(plan)
                 break
             except Exception as e:
-                if "Extra data" not in str(e):
-                    raise e
-                else:
+                if "Extra data" in str(e) or "Expecting value" in str(e):
                     retry_ctr -= 1
+                else:
+                    raise e
 
         return JsonResponse({'event': plan}, status=200)
 

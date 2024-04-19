@@ -217,6 +217,7 @@ logging.config.dictConfig(
     }
 )
 
+MAX_OUTPUT_TOKENS = 1000
 
 ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = []
