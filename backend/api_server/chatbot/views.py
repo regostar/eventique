@@ -6,6 +6,7 @@ from django.utils.dateparse import parse_datetime
 from .models import Event
 from api_server.settings import model
 
+
 @require_http_methods(["GET"])
 def generate_plan(request):
     try:
