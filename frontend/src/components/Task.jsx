@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { HiOutlineBars3BottomLeft } from 'react-icons/hi2';
+import { MdOutlineCancel } from 'react-icons/md';
 import { IoIosLink } from 'react-icons/io';
 import { BiTimer } from 'react-icons/bi';
 import { SiTask } from 'react-icons/si';
@@ -40,6 +41,7 @@ export default function Task() {
   const [events, setEvents] = useState([]);
   const { taskId } = useParams();
   const [id, _] = useState(taskId);
+  const navigate = useNavigate();
 
   const isTaskEdit = !!taskId && taskId !== 'new';
 
@@ -87,15 +89,32 @@ export default function Task() {
   };
 
   return (
-    <div className='flex flex-col p-4 gap-5'>
+    <div className='flex flex-col p-4 gap-5 text-slate-900'>
       <div className='flex items-center gap-4'>
         <SiTask className='w-6 h-6' />
-        <input
-          placeholder='Give a title'
-          className='text-2xl outline-none border-b-2 border-gray-200 focus:border-gray-400 p-2 w-3/4'
-          value={task?.title || ''}
-          onChange={(e) => updateTask('title', e.target.value)}
-        />
+        <div className='flex items-center justify-between rounded-md border-b-2 border-gray-200 focus:border-gray-400 p-2 w-3/4'>
+          <input
+            placeholder='Give a title'
+            className='text-2xl outline-none flex-1'
+            value={task?.title || ''}
+            onChange={(e) => updateTask('title', e.target.value)}
+          />
+          <MdOutlineCancel
+            className='w-6 h-6 cursor-pointer text-gray-400 hover:text-gray-700'
+            onClick={(e) => updateTask('title', '')}
+          />
+        </div>
+        <div className='flex items-center gap-2 text-slate-600'>
+          <button className='flex items-center justify-center p-2 rounded-md bg-purple-200 capitalize hover:text-white hover:bg-purple-500'>
+            {isTaskEdit ? 'update' : 'add task'}
+          </button>
+          <button
+            onClick={(e) => navigate('/')}
+            className='p-2 rounded-md bg-gray-200 capitalize hover:text-white hover:bg-gray-700'
+          >
+            cancel
+          </button>
+        </div>
       </div>
       <div className='flex flex-auto items-center gap-4'>
         <BiTimer className='w-6 h-6' />
@@ -131,7 +150,7 @@ export default function Task() {
               className='flex gap-1 rounded-md pl-1 capitalize text-md text-gray-500 cursor-pointer transition ease-in-out delay-50 border-b hover:border-gray-500'
             >
               <span>{task?.event?.title}</span>
-              <IoIosLink className='w-4 h-4'/>
+              <IoIosLink className='w-4 h-4' />
             </Link>
           </div>
         ) : (
