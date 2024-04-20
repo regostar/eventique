@@ -88,6 +88,33 @@ export default function Task() {
     });
   };
 
+  const handleUpdateClick = async () => {
+    const url = apiEndpoints.UPDATE_TASK.replace('<TASK_ID>', taskId);
+    let resp = null;
+    try {
+      resp = await axios.patch(url, task);
+    } catch (error) {
+      console.log('error updating task');
+    }
+
+    if (resp?.data) navigate('/');
+  };
+
+  const handleAddClick = async () => {
+    const url = apiEndpoints.ADD_TASK;
+    let resp = null;
+    try {
+      resp = await axios.post(url, task);
+    } catch (error) {
+      console.log('error adding task');
+    }
+
+    if (resp?.data) {
+      console.log('Added successfully, should redirect to event');
+      navigate('/');
+    }
+  };
+
   return (
     <div className='flex flex-col p-4 gap-5 text-slate-900'>
       <div className='flex items-center gap-4'>
@@ -105,7 +132,13 @@ export default function Task() {
           />
         </div>
         <div className='flex items-center gap-2 text-slate-600'>
-          <button className='flex items-center justify-center p-2 rounded-md bg-purple-200 capitalize hover:text-white hover:bg-purple-500'>
+          <button
+            className='flex items-center justify-center p-2 rounded-md bg-purple-200 capitalize hover:text-white hover:bg-purple-500'
+            onClick={(e) => {
+              if (isTaskEdit) handleUpdateClick();
+              else handleAddClick();
+            }}
+          >
             {isTaskEdit ? 'update' : 'add task'}
           </button>
           <button
@@ -157,9 +190,10 @@ export default function Task() {
           <div className='flex items-center'>
             <select className='py-2 pr-28 rounded-md text-gray-800 bg-white capitalize border-gray-300 border-b-2 focus:outline:none'>
               <option value='some Event'>Choose an event</option>
-              {events.map((e) => {
+              {events.map((e, i) => {
                 return (
                   <option
+                    key={i}
                     value={e.id}
                     className='capitalize text-gray-700 :bg-indigo-500'
                   >
