@@ -13,7 +13,10 @@ blocks:
         - name: Installation
           commands:
             - ls
-            - cd frontend
+            - cd eventique
+            - cd eventique/frontend
+            - ls
+            - gopen package.json
             - npm install
         - name: running the app
           commands:
