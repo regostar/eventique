@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { HiOutlineBars3BottomLeft } from 'react-icons/hi2';
+import { IoIosLink } from 'react-icons/io';
 import { BiTimer } from 'react-icons/bi';
 import { SiTask } from 'react-icons/si';
 import { LiaGlassCheersSolid } from 'react-icons/lia';
@@ -36,21 +37,22 @@ function valid(current) {
 
 export default function Task() {
   const [task, setTask] = useState({ ...blankTask });
+  const [events, setEvents] = useState([]);
   const { taskId } = useParams();
   const [id, _] = useState(taskId);
-  const navigate = useNavigate();
-  const isTaskEdit = !!taskId && taskId !== 'new';
-  console.log("task edit ",isTaskEdit);
 
-  console.log(task);
-  const getEvents = () => {
+  const isTaskEdit = !!taskId && taskId !== 'new';
+
+  const getEvents = async () => {
     const url = apiEndpoints.GET_EVENTS;
     let resp = null;
     try {
-      // resp = await axios.get(url);
+      resp = await axios.get(url);
     } catch (error) {
       console.log('Error fetching events');
     }
+
+    if (resp?.data?.events) setEvents([...resp?.data?.events]);
   };
 
   const getTask = () => {
@@ -90,7 +92,7 @@ export default function Task() {
         <SiTask className='w-6 h-6' />
         <input
           placeholder='Give a title'
-          className='text-2xl outline-none border-b-2 border-gray-200 focus:border-gray-400 p-2 w-full'
+          className='text-2xl outline-none border-b-2 border-gray-200 focus:border-gray-400 p-2 w-3/4'
           value={task?.title || ''}
           onChange={(e) => updateTask('title', e.target.value)}
         />
@@ -107,7 +109,7 @@ export default function Task() {
             if (moment(task.end).isBefore(moment(date)))
               updateTask('end', date);
           }}
-          className='w-fit outline-none border-gray-300 border-b-2 focus:border-gray-500'
+          className='rounded-md outline-none border-gray-300 border-b-2 focus:border-gray-500'
         />
         <span>to</span>
         <Datetime
@@ -116,25 +118,38 @@ export default function Task() {
           timeFormat='hh:mm a'
           isValidDate={valid}
           onChange={(date) => updateTask('end', moment(date).toDate())}
-          className='outline-none border-gray-300 border-b-2 focus:border-gray-500'
+          className='rounded-md outline-none border-gray-300 border-b-2 focus:border-gray-500'
         />
       </div>
-      <div className='flex items-center gap-4'>
+      <div className='flex items-center gap-4 border-b-2 border-transparent'>
         <LiaGlassCheersSolid className='w-6 h-6' />
         {isTaskEdit ? (
-          <div className='flex gap-1'>
-            <span className='text-md capitalise'>Event:</span>
+          <div className='flex items-center gap-2'>
+            <span className='text-md capitalize'>Event:</span>
             <Link
               to={`/events/${task?.event?.id}`}
-              className='capitalise text-md text-gray-500 cursor-pointer transition ease-in-out delay-50 hover:border-b hover:border-gray-300'
+              className='flex gap-1 rounded-md pl-1 capitalize text-md text-gray-500 cursor-pointer transition ease-in-out delay-50 border-b hover:border-gray-500'
             >
-              {task?.event?.title}
+              <span>{task?.event?.title}</span>
+              <IoIosLink className='w-4 h-4'/>
             </Link>
           </div>
         ) : (
-          <select>
-            <option value='some Event'>Choose an event</option>
-          </select>
+          <div className='flex items-center'>
+            <select className='py-2 pr-28 rounded-md text-gray-800 bg-white capitalize border-gray-300 border-b-2 focus:outline:none'>
+              <option value='some Event'>Choose an event</option>
+              {events.map((e) => {
+                return (
+                  <option
+                    value={e.id}
+                    className='capitalize text-gray-700 :bg-indigo-500'
+                  >
+                    {e.description}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         )}
       </div>
       <div className='flex gap-4'>
