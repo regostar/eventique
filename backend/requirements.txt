@@ -11,3 +11,4 @@ google-generativeai==0.4.1
 gunicorn==21.2.0
 python-dotenv==1.0.1
 gunicorn==21.2.0
+google_cloud_tasks==2.16.3

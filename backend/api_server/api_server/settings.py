@@ -36,18 +36,19 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'user_auth_api',
-    'chatbot',
-    'tasks',
-    'event',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "user_auth_api",
+    "chatbot",
+    "tasks",
+    "event",
+    "notification",
 ]
 
 MIDDLEWARE = [
@@ -217,6 +218,10 @@ logging.config.dictConfig(
     }
 )
 
+GCP_PROJECT = getenv("PROJECT", '')
+QUEUE_ID = getenv("QUEUE_ID", '')
+LOCATION = getenv("LOCATION", '')
+CLOUD_FUNCTION_URL = getenv("CLOUD_FUNCTION_URL", '')
 MAX_OUTPUT_TOKENS = 1000
 
 ALLOWED_HOSTS = []
