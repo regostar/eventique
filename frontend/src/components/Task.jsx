@@ -115,6 +115,17 @@ export default function Task() {
     }
   };
 
+  const setChosenEvent = (eventId) => {
+    setTask((prevTask) => {
+      const updatedTask = {
+        ...prevTask,
+        [prevTask.event.id]: eventId,
+      };
+      ;
+      return updatedTask;
+    });
+  };
+
   return (
     <div className='flex flex-col p-4 gap-5 text-slate-900'>
       <div className='flex items-center gap-4'>
@@ -188,16 +199,19 @@ export default function Task() {
           </div>
         ) : (
           <div className='flex items-center'>
-            <select className='py-2 pr-28 rounded-md text-gray-800 bg-white capitalize border-gray-300 border-b-2 focus:outline:none'>
-              <option value='some Event'>Choose an event</option>
-              {events.map((e, i) => {
+            <select
+              className='py-2 pr-28 rounded-md text-gray-800 bg-white capitalize border-gray-300 border-b-2 focus:outline:none'
+              onChange={(e) => setChosenEvent(e.target.value)}
+            >
+              <option value=''>Choose an event</option>
+              {events.map((event, i) => {
                 return (
                   <option
                     key={i}
-                    value={e.id}
+                    value={event.id}
                     className='capitalize text-gray-700 :bg-indigo-500'
                   >
-                    {e.description}
+                    {event.description}
                   </option>
                 );
               })}
