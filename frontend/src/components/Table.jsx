@@ -2,29 +2,29 @@ import React from 'react';
 import moment from 'moment';
 
 const Table = ({ events, showHeadings }) => {
-  const hasScroll = events.length > 6;  // condition to add the scrolling bar option
+  const hasScroll = events.length > 6;  // adding the number of rows limit to enable the scrolling bar
 
-  const getStatusColor = (status) => { // function to add color to the statuses
-    switch (status) {
-      case 'In Progress':
-        return 'bg-green-100 rounded-full px-3 py-1'; 
-      case 'Past':
-        return 'bg-yellow-100 rounded-full px-3 py-1'; 
-      case 'Upcoming':
-        return 'bg-purple-100 rounded-full px-3 py-1'; 
-      default:
-        return '';
+  const getStatusColor = (startDate, endDate) => {
+    const now = moment();  // creating a moment object representing the current date and time
+    const start = moment(startDate);
+    const end = moment(endDate);
+  
+    if (now.isAfter(end)) {  // if current date is after the end date then the event was in the past
+      return 'bg-yellow-100 rounded-full px-3 py-1'; 
+    } else if (now.isBetween(start, end)) {  // if the current date is between the start and the end dates of the event, then the event is in progress
+      return 'bg-green-100 rounded-full px-3 py-1'; 
+    } else {
+      return 'bg-purple-100 rounded-full px-3 py-1'; // upcoming event
     }
   };
 
   return (
     <div className={`overflow-x-auto ${hasScroll ? 'max-h-96' : ''}`}>
       <table className="table-auto w-full border-collapse border border-gray-400">
-        {showHeadings && (    
+        {showHeadings && (
           <thead>
             <tr>
-              {/* Adding column names */}
-              <th className="px-4 py-2 bg-gray-200 border border-gray-400">Event</th>  
+              <th className="px-4 py-2 bg-gray-200 border border-gray-400">Event</th>
               <th className="px-4 py-2 bg-gray-200 border border-gray-400">Start Date</th>
               <th className="px-4 py-2 bg-gray-200 border border-gray-400">End Date</th>
               <th className="px-4 py-2 bg-gray-200 border border-gray-400">Status</th>
@@ -32,19 +32,18 @@ const Table = ({ events, showHeadings }) => {
           </thead>
         )}
         <tbody>
-          {events.map((event, index) => (
+          {events.map((event, index) => (    // adding the data in the table
             <tr key={index}>
               <td className="px-4 py-2 border border-gray-400">{event.event}</td>
-              <td className="px-4 py-2 border border-gray-400">
+              <td className={`px-4 py-2 border border-gray-400 ${getStatusColor(event.startDate, event.endDate)}`}>
                 {moment(event.startDate).format('dddd, MMMM Do hh:mm a')}
               </td>
-              <td className="px-4 py-2 border border-gray-400">
+              <td className={`px-4 py-2 border border-gray-400 ${getStatusColor(event.startDate, event.endDate)}`}>
                 {moment(event.endDate).format('dddd, MMMM Do hh:mm a')}
-              </td>
+              </td>   
               <td className="px-4 py-2 border border-gray-400">
-                <span className={getStatusColor(event.status)}>
-                  {/* rendering the status of each event */}
-                  {event.status}  
+                <span className={getStatusColor(event.startDate, event.endDate)}>
+                  {event.status}
                 </span>
               </td>
             </tr>
@@ -52,77 +51,7 @@ const Table = ({ events, showHeadings }) => {
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default Table;
-
-// Adding sample test data for now
-export const sampleData = [
-  {
-    event: "Event 1",
-    startDate: "2024-04-20",
-    endDate: "2024-04-22",
-    status: "Upcoming"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Past"
-  },
-  {
-    event: "Event 3",
-    startDate: "2024-06-01",
-    endDate: "2024-06-03",
-    status: "Past"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "In Progress"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Upcoming"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "In Progress"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Upcoming"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "In Progress"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Past"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Upcoming"
-  },
-  {
-    event: "Event 2",
-    startDate: "2024-05-10",
-    endDate: "2024-05-12",
-    status: "Past"
-  }
-];
+export default Table

@@ -1,21 +1,23 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
-import Table, { sampleData } from './Table'; 
+import Table from './Table'; 
 import { apiEndpoints } from '../utils/apiEndpoints';
+import Loader from './Loader'; 
 
 export default function HomeEvents() {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        setLoading(true); // setting loading to true before fetching the data
         const response = await axios.get(apiEndpoints.GET_EVENTS);
         setEvents(response.data); 
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
-        setLoading(false);
+      } finally {
+        setLoading(false); // setting loading to false after the data is fetched
       }
     };
 
@@ -25,11 +27,10 @@ export default function HomeEvents() {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p> // to display a loading message
+        <Loader message="Loading..." /> // adding the loader message
       ) : (
         <>
-          <Table events={events} showHeadings={false} />
-          <Table events={sampleData} showHeadings={true} />
+          <Table events={events} showHeadings={true} />
         </>
       )}
     </div>
