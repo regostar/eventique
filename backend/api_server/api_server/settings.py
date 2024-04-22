@@ -36,18 +36,19 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'user_auth_api',
-    'chatbot',
-    'tasks',
-    'event',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "user_auth_api",
+    "chatbot",
+    "tasks",
+    "event",
+    "notification",
 ]
 
 MIDDLEWARE = [
@@ -174,8 +175,13 @@ genai.configure(api_key=GOOGLE_API_KEY)
 #   if 'generateContent' in m.supported_generation_methods:
 #     print(m.name)
 
-model = genai.GenerativeModel("gemini-pro")
-print("gemini-pro-latest Model is initialized")
+
+GEMINI = getenv("GEMINI", "gemini-1.0-pro-latest")
+
+# "gemini-1.0-pro-latest"
+model = genai.GenerativeModel(GEMINI)
+print(GEMINI, " is initialized")
+
 
 
 # Logging Configuration
@@ -217,6 +223,11 @@ logging.config.dictConfig(
     }
 )
 
+GCP_PROJECT = getenv("PROJECT", '')
+QUEUE_ID = getenv("QUEUE_ID", '')
+LOCATION = getenv("LOCATION", '')
+CLOUD_FUNCTION_URL = getenv("CLOUD_FUNCTION_URL", '')
+MAX_OUTPUT_TOKENS = 1000
 
 ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = []
@@ -224,7 +235,7 @@ CORS_ALLOWED_ORIGINS = []
 ALLOWED_HOSTS = json.loads(getenv("ALLOWED_HOST", ["127.0.0.1"]))
 
 CORS_ALLOWED_ORIGINS = json.loads(getenv("TRUSTED_ORIGIN", ["http://127.0.0.1"]))
-# CSRF_TRUSTED_ORIGINS = json.loads(getenv('TRUSTED_ORIGIN', ['http://127.0.0.1']))
+CSRF_TRUSTED_ORIGINS = json.loads(getenv('TRUSTED_ORIGIN', ['http://127.0.0.1']))
 
 # CORS_ORIGIN_ALLOW_ALL = True
 
