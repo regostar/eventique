@@ -3,13 +3,31 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.utils.dateparse import parse_datetime
-from .models import Event
-from api_server.settings import model
+from .models import Event, Task
+from django.contrib.auth.decorators import login_required
+from api_server.settings import model, MAX_OUTPUT_TOKENS
 
+# @login_required
 @require_http_methods(["GET"])
 def generate_plan(request):
+    """
+    prompt
+    history - json
+      history: [
+        {
+            role: "user",  //inputed by user
+            parts: "I want you to act like a Regular Show Character",
+        },
+        {
+            role: "model",  // outputed by LLM in response to the previous user input
+            parts: "Okay",
+        }]
+    """
     try:
         prompt = request.GET.get('prompt')
+        reprompt = request.GET.get('reprompt', False)
+        # if true, history should be there
+        history = request.GET.get('history', [])
         
         updated_prompt = f"""
             Role: you are an event planner who creates most important tasks using event description.
@@ -25,8 +43,8 @@ def generate_plan(request):
             6. Detail each task by providing title, description, start datetime and end datetime
             7. perform budgeting if required
 
-            Output format: 
-            valid JSON in the following format without triple backticks or written text outside json
+            The Output format is in strict JSON: 
+            validate JSON in the following format without triple backticks or written text outside json
             {
                 'title': '<Event title>',
                 'purpose': <Event purpose>,
@@ -45,11 +63,30 @@ def generate_plan(request):
                 ]
             }
             """
-
-        response = model.generate_content(updated_prompt)
-        plan = response.text.replace('```','').replace('json','').strip()
-
-        plan = json.loads(plan)
+        if reprompt:
+            updated_prompt += "Do it differently"
+        retry_ctr = 10
+        while(retry_ctr > 0):
+            try:
+                text_response = []
+                chat = model.start_chat(
+                        history=history,
+                        # "generationConfig": {
+                        #     "maxOutputTokens": MAX_OUTPUT_TOKENS,
+                        # },
+                        )
+                responses = chat.send_message(updated_prompt, stream=False)
+                # response = model.generate_content(updated_prompt)
+                for chunk in responses:
+                    text_response.append(chunk.text)
+                plan = text_response[-1].replace('```','').replace('json','').strip()
+                plan = json.loads(plan)
+                break
+            except Exception as e:
+                if "Extra data" in str(e) or "Expecting value" in str(e):
+                    retry_ctr -= 1
+                else:
+                    raise e
 
         return JsonResponse({'event': plan}, status=200)
 
@@ -57,31 +94,46 @@ def generate_plan(request):
         print("Error - ", str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
-"""
+
+
 @require_http_methods(["POST"])
-def accept_plan(request):
+def finalize_plan(request):
+    """This function is used to finalize a Plan for an Event.
+    User clicks on finalize to approve the plan.
+    The plan is saved and entry is created in database.
+    prompt containing the chat history is preserved.
+
+    Args:
+        request (_type_): should contain the event json and prompt
+
+    Returns:
+        json: success = true or false
+    """
     try:
-        # Assuming the request body is in JSON format
         data = json.loads(request.body)
-        prompt = data['prompt']
-        description = data['description']
-        start_time = data.get('start_time')  # Optional
-        end_time = data.get('end_time')  # Optional
-
-        # Convert string datetime to Python datetime object if not None
-        if start_time:
-            start_time = parse_datetime(start_time)
-        if end_time:
-            end_time = parse_datetime(end_time)
-
-        # Create and save the new event
-        # get user_id from request and then save
-        event = Event(prompt=prompt, description=description, start_time=start_time, end_time=end_time, user_id=1)
+        
+        # Create the Event
+        event = Event(
+            title=data.get('title', None),
+            purpose=data.get('purpose', None),
+            prompt=data.get('prompt', None),
+            start_time=data.get('start', None),
+            end_time=data.get('end', None)
+        )
         event.save()
-
-        return JsonResponse({'message': 'Event created successfully', 'id': event.id}, status=201)
-
+        
+        # Create the Tasks
+        tasks_data = data.get('tasks', [])
+        for task_data in tasks_data:
+            Task(
+                event=event,
+                title=task_data.get('title', None),
+                description=task_data.get('description', None),
+                start_time=task_data.get('start', None),
+                end_time=task_data.get('end', None),
+            ).save()
+        
+        return JsonResponse({"success": True, "message": "Event and tasks saved successfully."}, status=201)
     except Exception as e:
-        print(str(e))
-        return JsonResponse({'error': str(e)}, status=500)
-"""
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
