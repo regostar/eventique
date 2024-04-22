@@ -57,16 +57,14 @@ export default function Task() {
     if (resp?.data?.events) setEvents([...resp?.data?.events]);
   };
 
-  const getTask = () => {
+  const getTask = async () => {
     const url = apiEndpoints.GET_SINGLE_TASK.replace('<TASK_ID>', taskId);
-    let resp = null;
     try {
-      // resp = await axios.get(url);
-      // setTask({ ...resp?.data });
+      const resp = await axios.get(url);
+      setTask({ ...resp?.data });
     } catch (error) {
       console.log('Invalid task ID');
     }
-    setTask({ ...testTask });
   };
 
   useEffect(() => {

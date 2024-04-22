@@ -65,7 +65,7 @@ export default function Calendar() {
     <>
       <TaskPreviewModal task={selectedTask} setSelectedTask={setSelectedTask} />
       <FullCalendar
-        events={testEvent?.tasks} //adds tasks to calendar
+        events={tasks} //adds tasks to calendar
         eventContent={renderEventContent} //allows to custom set task display format on calendar
         aspectRatio={aspectRatio + 0.25}
         plugins={[dayGridPlugin, interactionPlugin]}
