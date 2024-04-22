@@ -174,8 +174,10 @@ genai.configure(api_key=GOOGLE_API_KEY)
 #   if 'generateContent' in m.supported_generation_methods:
 #     print(m.name)
 
-model = genai.GenerativeModel("gemini-pro")
-print("gemini-pro-latest Model is initialized")
+GEMINI = "gemini-1.5"
+# "gemini-1.0-pro-latest"
+model = genai.GenerativeModel(GEMINI)
+print(GEMINI, " is initialized")
 
 
 # Logging Configuration

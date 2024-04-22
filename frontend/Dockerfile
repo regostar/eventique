@@ -5,7 +5,7 @@ FROM node:20.9.0 AS development
 ENV NODE_ENV development
 
 # Setting up the work directory
-WORKDIR /react-app
+WORKDIR /react-app/
 
 # Installing dependencies
 COPY ./package*.json /react-app
