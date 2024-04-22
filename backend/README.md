@@ -80,10 +80,22 @@ To run the image :-
 
 docker-compose up -d
 
+gcloud auth login
+
+
+
 
 TO PUSH TO CLOUD RUN:- 
 -----------------------
 
+Initial setup -
+
+gcloud init
+
+gcloud auth configure-docker us-south1-docker.pkg.dev
+
+
+--------------
 docker build -t us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/backend-web -f Dockerfile --platform linux/x86_64 .
 
 docker push us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/backend-web
