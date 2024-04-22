@@ -7,6 +7,10 @@ from .models import Event, Task
 from django.contrib.auth.decorators import login_required
 from api_server.settings import model, MAX_OUTPUT_TOKENS
 
+@require_http_methods(["GET"])
+def status_check(request):
+    return JsonResponse({'success': True}, status=200)
+
 # @login_required
 @require_http_methods(["GET"])
 def generate_plan(request):
