@@ -8,7 +8,7 @@ ENV NODE_ENV development
 WORKDIR /react-app/
 
 # Installing dependencies
-COPY ./package*.json /react-app
+COPY ./package*.json /react-app/
 
 RUN npm install
 
