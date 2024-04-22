@@ -176,7 +176,8 @@ genai.configure(api_key=GOOGLE_API_KEY)
 #     print(m.name)
 
 
-GEMINI = "gemini-1.5"
+GEMINI = getenv("GEMINI", "gemini-1.0-pro-latest")
+
 # "gemini-1.0-pro-latest"
 model = genai.GenerativeModel(GEMINI)
 print(GEMINI, " is initialized")
