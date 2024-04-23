@@ -6,6 +6,7 @@ export const apiEndpoints = {
     'SIGNUP': `${HOST}:${PORT}/api/auth/register`,
     'GET_TASKS': `${HOST}:${PORT}/api/tasks?start_time=<START_TIME>&end_time=<END_TIME>`,
     'GET_EVENTS': `${HOST}:${PORT}/api/events`,
+    'GET_SINGLE_EVENT': `${HOST}:${PORT}/api/events/<EVENT_ID>`,
     'GEN_EVENT': `${HOST}:${PORT}/api/chatbot/generate-plan?prompt=<PROMPT>`,
     'REGEN_EVENT': `${HOST}:${PORT}/api/chatbot/generate-plan?regenerate=true&prompt=<PROMPT>`,
     'APPROVE_PLAN': `${HOST}:${PORT}/api/chatbot/approve-plan`

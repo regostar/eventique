@@ -7,6 +7,7 @@ import Calendar from './Calendar';
 import Profile from './Profile';
 import Chatpage from './Chatpage';
 import HomeEvents from './HomeEvents';
+import Event from './Event';
 
 function Homepage() {
   const [activePageName, setActivePageName] = useState('calendar')
@@ -21,6 +22,7 @@ function Homepage() {
             <Route path='/event-gen' element={<Chatpage />} />
             <Route path='/user-profile/:userId' element={<Profile />} />
             <Route path='/events' element={<HomeEvents />}/>
+            <Route path='/events/:eventId' element={<Event />}/>
           </Routes>
         </div>
       </div>

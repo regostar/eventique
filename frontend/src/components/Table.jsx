@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { IoIosLink } from 'react-icons/io';
 import moment from 'moment';
 
 const PAST = 'past';
@@ -32,7 +34,11 @@ const Table = ({ events, showHeadings }) => {
   };
 
   return (
-    <div className={`rounded-md shadow-md hide-scrollbar overflow-x-auto ${hasScroll ? 'max-h-96' : ''}`}>
+    <div
+      className={`rounded-md shadow-md hide-scrollbar overflow-x-auto ${
+        hasScroll ? 'max-h-96' : ''
+      }`}
+    >
       <table className='table-auto w-full border-collapse border border-gray-400'>
         {showHeadings && (
           <thead>
@@ -58,8 +64,14 @@ const Table = ({ events, showHeadings }) => {
             // adding the data in the table
             return (
               <tr key={index}>
-                <td className='capitalize px-4 py-2 border border-gray-400'>
-                  {event.title}
+                <td className='capitalize px-4 py-2 border border-gray-400 '>
+                  <Link
+                    to={`/events/${event?.id}`}
+                    className='w-fit flex gap-2 rounded-md pl-1 text-gray-500 cursor-pointer transition ease-in-out delay-50 border-b hover:border-gray-500'
+                  >
+                    <span>{event?.title}</span>
+                    <IoIosLink className='w-4 h-4' />
+                  </Link>
                 </td>
                 <td className='px-4 py-2 border border-gray-400'>
                   {moment(event.start).format('dddd, MMMM Do hh:mm a')}
@@ -68,7 +80,13 @@ const Table = ({ events, showHeadings }) => {
                   {moment(event.end).format('dddd, MMMM Do hh:mm a')}
                 </td>
                 <td className='px-4 py-2 border border-gray-400'>
-                  <span className={`capitalize rounded-full px-3 py-1 ${getStatusColor(estatus)}`}>{estatus}</span>
+                  <span
+                    className={`capitalize rounded-full px-3 py-1 ${getStatusColor(
+                      estatus
+                    )}`}
+                  >
+                    {estatus}
+                  </span>
                 </td>
               </tr>
             );
