@@ -33,3 +33,23 @@ def get_tasks(request):
     except Exception as e:
         print("Error - ", str(e))
         return JsonResponse({'error': str(e)}, status=500)
+
+@require_http_methods(["GET"])
+def get_single_task(request, taskId=None):
+    try:
+        task_obj = Task.objects.get(pk=taskId)
+        task = {
+            "title": task_obj.title,
+            "start": task_obj.start_time,
+            "description": task_obj.description,
+            "end": task_obj.end_time,
+            "event": {
+                "id": task_obj.event.pk,
+                "title": task_obj.event.title
+                },
+            }
+        return JsonResponse(task, status=200)
+    except Exception as e:
+        print("Error -", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+        

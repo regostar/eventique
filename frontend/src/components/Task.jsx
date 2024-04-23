@@ -7,6 +7,7 @@ import { BiTimer } from 'react-icons/bi';
 import { SiTask } from 'react-icons/si';
 import { LiaGlassCheersSolid } from 'react-icons/lia';
 
+import Loader from './Loader';
 import axios from 'axios';
 import 'react-datetime/css/react-datetime.css';
 import Datetime from 'react-datetime';
@@ -41,6 +42,7 @@ export default function Task() {
   const [events, setEvents] = useState([]);
   const { taskId } = useParams();
   const [id, _] = useState(taskId);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const isTaskEdit = !!taskId && taskId !== 'new';
@@ -55,13 +57,23 @@ export default function Task() {
     }
 
     if (resp?.data?.events) setEvents([...resp?.data?.events]);
+    setLoading(false);
   };
 
   const getTask = async () => {
     const url = apiEndpoints.GET_SINGLE_TASK.replace('<TASK_ID>', taskId);
     try {
       const resp = await axios.get(url);
-      setTask({ ...resp?.data });
+      const rawTask = resp?.data;
+
+      const safe_task = {
+        ...rawTask,
+        start: moment(rawTask.start).toDate(),
+        end: moment(rawTask.end).toDate(),
+      }
+      setTask(safe_task );
+      
+      setLoading(false);
     } catch (error) {
       console.log('Invalid task ID');
     }
@@ -123,6 +135,9 @@ export default function Task() {
       return updatedTask;
     });
   };
+
+  if (loading)
+    return <Loader message='Preparing Form...'/>
 
   return (
     <div className='flex flex-col p-4 gap-5 text-slate-900'>
@@ -220,9 +235,9 @@ export default function Task() {
       <div className='flex gap-4'>
         <HiOutlineBars3BottomLeft className='w-7 h-7' />
         <textarea
-          cols='30'
+          cols='50'
           rows='10'
-          className='w-1/2 resize-none outline-none border-b-2 border-gray-300 overflow-y-auto'
+          className='w-3/4 resize-none outline-none border-b-2 border-gray-300 overflow-y-auto rounded-md'
           placeholder='Describe the task'
           value={task?.description}
           onChange={(e) => updateTask('description', e.target.value)}

@@ -3,5 +3,6 @@ from . import views
 
 # URLConf
 urlpatterns = [
-    path('', views.get_tasks, name='tasks/get-tasks')
+    path('', views.get_tasks, name='tasks/get-tasks'),
+    path('<int:taskId>/', views.get_single_task, name='tasks/get-single-task')
 ]
