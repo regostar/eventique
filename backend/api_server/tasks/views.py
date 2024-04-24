@@ -1,6 +1,8 @@
+import json
 from django.db.models import Q
 from datetime import datetime
 from django.http import JsonResponse
+from rest_framework.response import Response
 from django.views.decorators.http import require_http_methods
 
 from chatbot.models import Task
@@ -34,11 +36,16 @@ def get_tasks(request):
         print("Error - ", str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
-@require_http_methods(["GET"])
-def get_single_task(request, taskId=None):
+@require_http_methods(["GET", "PATCH"])
+def single_task(request, taskId=None):
     try:
         task_obj = Task.objects.get(pk=taskId)
-        task = {
+    except Task.DoesNotExist:
+        return JsonResponse({'error': "No valid Task found"}, status=404)
+    
+    # Inner utility function 
+    def prepareResponseTask():
+        return {
             "title": task_obj.title,
             "start": task_obj.start_time,
             "description": task_obj.description,
@@ -48,8 +55,21 @@ def get_single_task(request, taskId=None):
                 "title": task_obj.event.title
                 },
             }
-        return JsonResponse(task, status=200)
-    except Exception as e:
-        print("Error -", str(e))
-        return JsonResponse({'error': str(e)}, status=500)
+    try:
+        if request.method == 'GET':
+            return JsonResponse(prepareResponseTask(), status=200)
         
+        elif request.method == 'PATCH':
+            data = json.loads(request.body)
+            print(data.keys())
+            task_obj.title = data['title']
+            task_obj.description = data['description']
+            task_obj.start_time = data['start']
+            task_obj.end_time = data['end']
+
+            task_obj.save()
+            return JsonResponse(prepareResponseTask(), status=200)
+
+    except Exception as e:
+        print("Error - ", str(e))
+        return JsonResponse({'error': str(e)}, status=500)

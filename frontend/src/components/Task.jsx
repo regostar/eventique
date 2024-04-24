@@ -42,42 +42,10 @@ export default function Task() {
   const [events, setEvents] = useState([]);
   const { taskId } = useParams();
   const [id, _] = useState(taskId);
-  const [loading, setLoading] = useState(true);
+  const [loadingMsg, setLoadingMsg] = useState('');
   const navigate = useNavigate();
 
   const isTaskEdit = !!taskId && taskId !== 'new';
-
-  const getEvents = async () => {
-    const url = apiEndpoints.GET_EVENTS;
-    let resp = null;
-    try {
-      resp = await axios.get(url);
-    } catch (error) {
-      console.log('Error fetching events');
-    }
-
-    if (resp?.data?.events) setEvents([...resp?.data?.events]);
-    setLoading(false);
-  };
-
-  const getTask = async () => {
-    const url = apiEndpoints.GET_SINGLE_TASK.replace('<TASK_ID>', taskId);
-    try {
-      const resp = await axios.get(url);
-      const rawTask = resp?.data;
-
-      const safe_task = {
-        ...rawTask,
-        start: moment(rawTask.start).toDate(),
-        end: moment(rawTask.end).toDate(),
-      }
-      setTask(safe_task );
-      
-      setLoading(false);
-    } catch (error) {
-      console.log('Invalid task ID');
-    }
-  };
 
   useEffect(() => {
     if (!isTaskEdit) {
@@ -87,8 +55,41 @@ export default function Task() {
     }
   }, [id]);
 
+  const getEvents = async () => {
+    const url = apiEndpoints.GET_EVENTS;
+    let resp = null;
+    try {
+      setLoadingMsg('Preparing the form...');
+      resp = await axios.get(url);
+    } catch (error) {
+      console.log('Error fetching events');
+    }
+
+    if (resp?.data?.events) setEvents([...resp?.data?.events]);
+    setLoadingMsg('');
+  };
+
+  const getTask = async () => {
+    const url = apiEndpoints.GET_SINGLE_TASK.replace('<TASK_ID>', taskId);
+    try {
+      setLoadingMsg('Fetching the Task...');
+      const resp = await axios.get(url);
+      const rawTask = resp?.data;
+
+      const safe_task = {
+        ...rawTask,
+        start: moment(rawTask.start).toDate(),
+        end: moment(rawTask.end).toDate(),
+      };
+      setTask(safe_task);
+
+      setLoadingMsg('');
+    } catch (error) {
+      console.log('Invalid task ID');
+    }
+  };
+
   const updateTask = (attribute, val) => {
-    console.log(attribute, val);
     setTask((prevTask) => {
       const updatedTask = {
         ...prevTask,
@@ -102,12 +103,24 @@ export default function Task() {
     const url = apiEndpoints.UPDATE_TASK.replace('<TASK_ID>', taskId);
     let resp = null;
     try {
+      setLoadingMsg('Applying changes ...');
       resp = await axios.patch(url, task);
     } catch (error) {
       console.log('error updating task');
     }
 
-    if (resp?.data) navigate('/');
+    if (resp?.data) {
+      const rawTask = resp?.data;
+
+      const safe_task = {
+        ...rawTask,
+        start: moment(rawTask.start).toDate(),
+        end: moment(rawTask.end).toDate(),
+      };
+      setTask(safe_task);
+    }
+
+    setLoadingMsg('');
   };
 
   const handleAddClick = async () => {
@@ -131,13 +144,11 @@ export default function Task() {
         ...prevTask,
         [prevTask.event.id]: eventId,
       };
-      ;
       return updatedTask;
     });
   };
 
-  if (loading)
-    return <Loader message='Preparing Form...'/>
+  if (loadingMsg) return <Loader message={loadingMsg} />;
 
   return (
     <div className='flex flex-col p-4 gap-5 text-slate-900'>
