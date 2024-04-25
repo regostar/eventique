@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import PromptSuggestion from './PromptSuggestion';
 import TaskOverview from './TaskOverview';
 import TaskPreviewModal from './TaskPreviewModal';
-
+import moment from 'moment';
 // Use the test Data when needed
 //import { testEvent } from '../testData';
 
@@ -17,18 +17,24 @@ import Loader from './Loader';
 import { apiEndpoints } from '../utils/apiEndpoints';
 import { testEvent } from '../testData';
 
+const today = moment()
+
 const iconCSS = 'w-6 h-6 text-[#9BD61DFF]';
 const suggestions = [
   {
     display: 'Plan for birthday party',
+    prompt: `Plan for birthday party on ${today.add(4,'days').format('Do MMMM,yyyy')}. Make minimal plan get allow 10 people gathering. I intend to have both 
+    vegan and non-vegan food, so include some dishes for menu. My budget is around 100$. Keep it less than 1 week`,
     icon: <RiQuestionMark className={iconCSS} />,
   },
   {
     display: 'create a roadmap to host a small formal meetup',
+    prompt: `Plan a roadmap to host a small formal meetup on ${today.add(3,'days').format('Do mmm,yyyy')} expecting 10 people.`,
     icon: <BiPaint className={iconCSS} />,
   },
   {
-    display: 'I wish to surprise my in-laws coming this weekend, what do I do?',
+    display: `I wish to surprise my in-laws coming on ${today.add(7,'days').format('Do mmm,yyyy')}, what do I do?`,
+    prompt: `My in-laws are coming on ${today.add(7,'days').format('Do mmm,yyyy')}. I and my wife plan to give them a small surprise on that day. Give a plan and suggest few ideas`,
     icon: <PiLightbulb className={iconCSS} />,
   },
 ];
@@ -105,7 +111,7 @@ export default function Chatpage() {
   const handleApproveClick = async () => {
     const url = apiEndpoints.APPROVE_PLAN;
     try {
-      await axios.post(url, plan);
+      await axios.post(url, {...plan, prompt});
     } catch (error) {
       console.log('Error approving plan');
       return;
