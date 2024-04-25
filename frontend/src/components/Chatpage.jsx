@@ -17,24 +17,36 @@ import Loader from './Loader';
 import { apiEndpoints } from '../utils/apiEndpoints';
 import { testEvent } from '../testData';
 
-const today = moment()
+const today = moment();
 
 const iconCSS = 'w-6 h-6 text-[#9BD61DFF]';
 const suggestions = [
   {
     display: 'Plan for birthday party',
-    prompt: `Plan for birthday party on ${today.add(4,'days').format('Do MMMM,yyyy')}. Make minimal plan get allow 10 people gathering. I intend to have both 
+    prompt: `Plan for birthday party on ${today
+      .add(4, 'days')
+      .format(
+        'Do MMMM,yyyy'
+      )}. Make minimal plan get allow 10 people gathering. I intend to have both 
     vegan and non-vegan food, so include some dishes for menu. My budget is around 100$. Keep it less than 1 week`,
     icon: <RiQuestionMark className={iconCSS} />,
   },
   {
     display: 'create a roadmap to host a small formal meetup',
-    prompt: `Plan a roadmap to host a small formal meetup on ${today.add(3,'days').format('Do mmm,yyyy')} expecting 10 people.`,
+    prompt: `Plan a roadmap to host a small formal meetup on ${today
+      .add(3, 'days')
+      .format('Do MMMM,yyyy')} expecting 10 people.`,
     icon: <BiPaint className={iconCSS} />,
   },
   {
-    display: `I wish to surprise my in-laws coming on ${today.add(7,'days').format('Do mmm,yyyy')}, what do I do?`,
-    prompt: `My in-laws are coming on ${today.add(7,'days').format('Do mmm,yyyy')}. I and my wife plan to give them a small surprise on that day. Give a plan and suggest few ideas`,
+    display: `I wish to surprise my in-laws coming on ${today
+      .add(7, 'days')
+      .format('Do MMMM,yyyy')}, what do I do?`,
+    prompt: `My in-laws are coming on ${today
+      .add(7, 'days')
+      .format(
+        'Do MMMM,yyyy'
+      )}. I and my wife plan to give them a small surprise on that day. Give a plan and suggest few ideas`,
     icon: <PiLightbulb className={iconCSS} />,
   },
 ];
@@ -110,8 +122,10 @@ export default function Chatpage() {
 
   const handleApproveClick = async () => {
     const url = apiEndpoints.APPROVE_PLAN;
+    const processedPlan = prepareForApprove();
+
     try {
-      await axios.post(url, {...plan, prompt});
+      await axios.post(url, { ...processedPlan, prompt});
     } catch (error) {
       console.log('Error approving plan');
       return;
@@ -119,6 +133,17 @@ export default function Chatpage() {
 
     console.log('Data saved to the database');
     navigate('/'); // redirecting to the homepage
+  };
+
+  const prepareForApprove = () => {
+    const pcopy = { ...plan };
+    pcopy['start'] = moment(pcopy['start']).toDate();
+    pcopy['end'] = moment(pcopy['end']).toDate();
+    for (let task of pcopy['tasks']) {
+      task['start'] = moment(task['start']).toDate();
+      task['end'] = moment(task['end']).toDate();
+    }
+    return pcopy;
   };
 
   const btnOnClicks = {

@@ -14,5 +14,5 @@ export const apiEndpoints = {
     'GET_EVENTS': `${HOST}:${PORT}/api/events/`,
     'GEN_EVENT': `${HOST}:${PORT}/api/chatbot/generate-plan?prompt=<PROMPT>`,
     'REGEN_EVENT': `${HOST}:${PORT}/api/chatbot/generate-plan?regenerate=true&prompt=<PROMPT>`,
-    'APPROVE_PLAN': `${HOST}:${PORT}/api/chatbot/approve-plan`
+    'APPROVE_PLAN': `${HOST}:${PORT}/api/chatbot/finalize-plan`
 }
