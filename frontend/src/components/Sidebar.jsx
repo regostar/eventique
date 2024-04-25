@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { BsStars } from 'react-icons/bs';
+import { LiaGlassCheersSolid } from "react-icons/lia";
 
 import eventique_logo from '../assets/login/logo.jpg';
 
@@ -15,6 +16,11 @@ const sidebarOptions = [
     name: 'plan event',
     icon: <BsStars className='w-6 h-6' />,
     linkTo: '/event-gen',
+  },
+  {
+    name: 'Events',
+    icon: <LiaGlassCheersSolid className='w-6 h-6' />,
+    linkTo: '/events',
   },
 ];
 // active and inactive classes to be set later for better UX
