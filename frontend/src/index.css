@@ -9,3 +9,9 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.rdt > input { /* Target the main picker container */
+  width: 230px; /* Set your preferred width */
+  outline: none;
+  padding: 0.5em;
+}
