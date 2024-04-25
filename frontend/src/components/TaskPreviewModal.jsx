@@ -12,9 +12,13 @@ import { IoCube } from 'react-icons/io5';
 
 import { apiEndpoints } from '../utils/apiEndpoints';
 
-export default function TaskPreviewModal({ task, setSelectedTask }) {
+export default function TaskPreviewModal({
+  task,
+  setSelectedTask,
+  refreshCalendar,
+}) {
   const navigate = useNavigate();
-  
+
   const handleCloseModal = () => {
     setSelectedTask(null);
   };
@@ -24,13 +28,14 @@ export default function TaskPreviewModal({ task, setSelectedTask }) {
   };
 
   const handleDelete = async () => {
-    apiEndpoints.DELETE_TASK.replace('<TASK_ID>', task?.taskId);
+    const url = apiEndpoints.DELETE_TASK.replace('<TASK_ID>', task?.taskId);
     try {
-      await axios.delete();
+      await axios.delete(url);
     } catch (error) {
       console.log('error deleting');
     }
     handleCloseModal();
+    if (refreshCalendar) refreshCalendar();
   };
 
   const formatDateTime = (dateTimeString) => {

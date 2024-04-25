@@ -36,7 +36,7 @@ def get_tasks(request):
         print("Error - ", str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
-@require_http_methods(["GET", "PATCH"])
+@require_http_methods(["GET", "PATCH", "DELETE"])
 def single_task(request, taskId=None):
     try:
         task_obj = Task.objects.get(pk=taskId)
@@ -69,6 +69,10 @@ def single_task(request, taskId=None):
 
             task_obj.save()
             return JsonResponse(prepareResponseTask(), status=200)
+        
+        elif request.method == "DELETE":
+            # task_obj.delete()
+            return JsonResponse(data={}, status=204)
 
     except Exception as e:
         print("Error - ", str(e))

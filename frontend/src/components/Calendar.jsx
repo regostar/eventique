@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
@@ -9,14 +9,14 @@ import moment from 'moment';
 import { apiEndpoints } from '../utils/apiEndpoints';
 import TaskPreviewModal from './TaskPreviewModal';
 
-import { testEvent  } from '../testData';
+import { testEvent } from '../testData';
 
 const aspectRatio = window.screen.width / window.screen.height;
 
 export default function Calendar() {
-  const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const navigate = useNavigate();
+  const calendarRef = useRef(null);
 
   const fetchAndRenderTasks = async (dateInfo) => {
     const start = moment(dateInfo.start).toISOString();
@@ -35,7 +35,7 @@ export default function Calendar() {
     }
     if (!resp?.data?.tasks) return;
 
-    setTasks(resp.data.tasks);
+    return resp.data.tasks;
   };
 
   const renderEventContent = (eventInfo) => {
@@ -61,11 +61,20 @@ export default function Calendar() {
     setSelectedTask(task);
   };
 
+  const refreshCalendar = () => {
+    if (calendarRef.current)
+    {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.refetchEvents();
+    }
+  }
+
   return (
     <>
-      <TaskPreviewModal task={selectedTask} setSelectedTask={setSelectedTask} />
+      <TaskPreviewModal task={selectedTask} setSelectedTask={setSelectedTask} refreshCalendar={refreshCalendar}/>
       <FullCalendar
-        events={tasks} //adds tasks to calendar
+        ref={calendarRef}
+        // events={tasks} //adds tasks to calendar
         eventContent={renderEventContent} //allows to custom set task display format on calendar
         aspectRatio={aspectRatio + 0.25}
         plugins={[dayGridPlugin, interactionPlugin]}
@@ -75,8 +84,9 @@ export default function Calendar() {
           right: 'dayGridMonth,dayGridWeek,dayGridDay',
         }}
         initialView='dayGridMonth'
-        datesSet={fetchAndRenderTasks} //triggered every time visible date range changes
+        // datesSet={fetchAndRenderTasks} //triggered every time visible date range changes
         eventClick={handleTaskClick}
+        eventSources={[fetchAndRenderTasks]}
       />
     </>
   );
