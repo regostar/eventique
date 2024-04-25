@@ -80,7 +80,7 @@ const iconsAfterSend = [
 export default function Chatpage() {
   const [prompt, setPrompt] = useState('');
   const [plan, setPlan] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState('');
   const [selectedTask, setSelectedTask] = useState(null);
   const navigate = useNavigate();
 
@@ -89,26 +89,27 @@ export default function Chatpage() {
   const fetchNSetPlan = async (url) => {
     let resp = null;
     try {
-      setLoading(true);
       resp = await axios.get(url);
     } catch (error) {
       console.log('error fetching event plan');
     }
 
     if (resp?.data) setPlan(resp?.data?.event);
-
-    setLoading(false);
   };
 
   const handleSendClick = async () => {
     const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
+    setLoadingMsg('Generating a plan...!')
     await fetchNSetPlan(url);
+    setLoadingMsg('')
     // setPlan(testEvent);
   };
-
+  
   const handleRegenerateClick = async () => {
     const url = apiEndpoints.REGEN_EVENT.replace('<PROMPT>', prompt);
+    setLoadingMsg('Re-generating the plan...!')
     await fetchNSetPlan(url);
+    setLoadingMsg('')
   };
 
   const taskClickHandler = (taskIdx) => {
@@ -121,29 +122,31 @@ export default function Chatpage() {
   };
 
   const handleApproveClick = async () => {
+    const prepareForApprove = () => {
+      const pcopy = { ...plan };
+      pcopy['start'] = moment(pcopy['start']).toDate();
+      pcopy['end'] = moment(pcopy['end']).toDate();
+      for (let task of pcopy['tasks']) {
+        task['start'] = moment(task['start']).toDate();
+        task['end'] = moment(task['end']).toDate();
+      }
+      return pcopy;
+    };
+
+    setLoadingMsg('Finalizing your plan...!')
     const url = apiEndpoints.APPROVE_PLAN;
     const processedPlan = prepareForApprove();
 
     try {
-      await axios.post(url, { ...processedPlan, prompt});
+      await axios.post(url, { ...processedPlan, prompt });
     } catch (error) {
       console.log('Error approving plan');
       return;
     }
 
     console.log('Data saved to the database');
+    setLoadingMsg('')
     navigate('/'); // redirecting to the homepage
-  };
-
-  const prepareForApprove = () => {
-    const pcopy = { ...plan };
-    pcopy['start'] = moment(pcopy['start']).toDate();
-    pcopy['end'] = moment(pcopy['end']).toDate();
-    for (let task of pcopy['tasks']) {
-      task['start'] = moment(task['start']).toDate();
-      task['end'] = moment(task['end']).toDate();
-    }
-    return pcopy;
   };
 
   const btnOnClicks = {
@@ -154,7 +157,7 @@ export default function Chatpage() {
   };
 
   let mainContent = '';
-  if (!loading) {
+  if (!loadingMsg) {
     if (!plan) {
       mainContent = (
         <div className='flex flex-col w-full px-4 gap-1 justify-items-start justify-center'>
@@ -187,7 +190,7 @@ export default function Chatpage() {
         </div>
       );
     }
-  } else mainContent = <Loader message={'Creating a plan ...'} />;
+  } else mainContent = <Loader message={loadingMsg} />;
 
   let buttonsToShow = '';
   if (!plan) {
