@@ -39,7 +39,7 @@ class UserLogin(APIView):
 		if serializer.is_valid(raise_exception=True):
 			user = serializer.check_user(data)
 			login(request, user)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+			return Response({"id": user.pk}, status=status.HTTP_200_OK)
 
 
 class UserLogout(APIView):
