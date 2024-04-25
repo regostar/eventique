@@ -80,10 +80,22 @@ To run the image :-
 
 docker-compose up -d
 
+gcloud auth login
+
+
+
 
 TO PUSH TO CLOUD RUN:- 
 -----------------------
 
+Initial setup -
+
+gcloud init
+
+gcloud auth configure-docker us-south1-docker.pkg.dev
+
+
+--------------
 docker build -t us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/backend-web -f Dockerfile --platform linux/x86_64 .
 
 docker push us-south1-docker.pkg.dev/bamboo-theorem-415222/eventique-backend/backend-web
@@ -110,3 +122,7 @@ docker --env-file .env run --name backend-eventique -p 8000:8000  -d api_server
 docker run --env-file .env  --name backend-eventique -p 8000:8000  -d api_server
 
 docker tag eventique-backend regostar/eventique-backend
+
+https://medium.com/@roman.njoroge_90440/google-gemini-tutorial-how-to-build-a-chat-app-with-characters-from-your-favorite-show-a8c0efd732ef
+
+- test deploy

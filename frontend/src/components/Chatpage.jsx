@@ -11,10 +11,11 @@ import TaskOverview from './TaskOverview';
 import TaskPreviewModal from './TaskPreviewModal';
 
 // Use the test Data when needed
-// import { testEvent } from '../testData';
+//import { testEvent } from '../testData';
 
 import Loader from './Loader';
 import { apiEndpoints } from '../utils/apiEndpoints';
+import { testEvent } from '../testData';
 
 const iconCSS = 'w-6 h-6 text-[#9BD61DFF]';
 const suggestions = [
@@ -65,6 +66,8 @@ export default function Chatpage() {
   const [selectedTask, setSelectedTask] = useState(null);
   const navigate = useNavigate();
 
+  // console.log(testEvent);
+
   const fetchNSetPlan = async (url) => {
     let resp = null;
     try {
@@ -74,16 +77,15 @@ export default function Chatpage() {
       console.log('error fetching event plan');
     }
 
-    setLoading(false);
+    if (resp?.data) setPlan(resp?.data?.event);
 
-    if (resp?.data) {
-      setPlan(resp?.data?.event);
-    }
+    setLoading(false);
   };
 
   const handleSendClick = async () => {
     const url = apiEndpoints.GEN_EVENT.replace('<PROMPT>', prompt);
     await fetchNSetPlan(url);
+    // setPlan(testEvent);
   };
 
   const handleRegenerateClick = async () => {
@@ -135,8 +137,13 @@ export default function Chatpage() {
         </div>
       );
     } else {
+      const shouldScroll = plan.tasks.length > 6; // condition to add the scrollbar
       mainContent = (
-        <div className='overflow-y-auto flex flex-col gap-2 justify-start w-full p-2'>
+        // defining the height of the shouldScroll variable and preventing excessive scrolling
+        <div
+          className={`overflow-y-scroll max-h-[65vh] bg-transparent rounded-md shadow-inner hide-scrollbar flex flex-col gap-2 justify-start w-full p-2`}
+          // style={{ maxHeight: shouldScroll ? 'calc(100vh - 30vh)' : 'auto' }}
+        >
           {plan?.tasks?.map((task, idx) => (
             <TaskOverview
               key={idx}
