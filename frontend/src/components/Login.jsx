@@ -49,7 +49,10 @@ export default function Login() {
     } catch (error) {}
 
     if (resp?.data) {
+      const id = resp.data?.id;
       const csrf = Cookies.get('csrftoken')
+      
+      localStorage.setItem('USER_ID', id);
       localStorage.setItem('CSRF_TOKEN', csrf);
       navigate('/');
     } else {
