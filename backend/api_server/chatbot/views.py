@@ -115,17 +115,19 @@ def finalize_plan(request):
     """
     try:
         data = json.loads(request.body)
+        print("\n", data.get('start'))
         
         # Create the Event
-        event = Event(
+        event = Event.objects.create(
             title=data.get('title', None),
             purpose=data.get('purpose', None),
             prompt=data.get('prompt', None),
             start_time=data.get('start', None),
-            end_time=data.get('end', None)
+            end_time=data.get('end', None),
+            user_id=data.get('userId',None)
         )
         event.save()
-        
+        print("\nEvent saved!!\n")
         # Create the Tasks
         tasks_data = data.get('tasks', [])
         for task_data in tasks_data:

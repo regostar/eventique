@@ -1,3 +1,5 @@
+import moment from "moment";
+const today = moment()
 export const testEvent = {
   title: 'abc',
   tasks: [
@@ -89,3 +91,15 @@ export const events = [
     end: '2024-05-12',
   },
 ];
+
+export const task = {
+  title: 'Find Venue',
+  start: '2023-07-01T09:00:00Z',
+  description:
+      'Look for a suitable venue that can accommodate 15 guests and is within the budget.',
+  end: '2023-07-01T17:00:00Z',
+  event: {
+      id: 1,
+      title: "Kid's birthday party",
+  }
+}

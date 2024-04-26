@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie'
 
 import girlImage from '../assets/login/girl.jpeg';
 import calendarImage from '../assets/login/calendar.jpeg';
@@ -47,8 +48,14 @@ export default function Login() {
       );
     } catch (error) {}
 
-    if (resp?.data) navigate('/');
-    else {
+    if (resp?.data) {
+      const id = resp.data?.id;
+      const csrf = Cookies.get('csrftoken')
+      
+      localStorage.setItem('USER_ID', id);
+      localStorage.setItem('CSRF_TOKEN', csrf);
+      navigate('/');
+    } else {
       setWrongCreds(true);
       setTimeout(() => {
         setWrongCreds(false);
