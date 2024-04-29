@@ -5,7 +5,13 @@ from django.views.decorators.http import require_http_methods
 from django.utils.dateparse import parse_datetime
 from .models import Event, Task
 from django.contrib.auth.decorators import login_required
+from notification.utils import notify
 from api_server.settings import model, MAX_OUTPUT_TOKENS
+from datetime import datetime
+
+@require_http_methods(["GET"])
+def status_check(request):
+    return JsonResponse({'success': True}, status=200)
 
 # @login_required
 @require_http_methods(["GET"])
@@ -111,17 +117,19 @@ def finalize_plan(request):
     """
     try:
         data = json.loads(request.body)
+        print("\n", data.get('start'))
         
         # Create the Event
-        event = Event(
+        event = Event.objects.create(
             title=data.get('title', None),
             purpose=data.get('purpose', None),
             prompt=data.get('prompt', None),
             start_time=data.get('start', None),
-            end_time=data.get('end', None)
+            end_time=data.get('end', None),
+            user_id=data.get('userId',None)
         )
         event.save()
-        
+        print("\nEvent saved!!\n")
         # Create the Tasks
         tasks_data = data.get('tasks', [])
         for task_data in tasks_data:
@@ -132,8 +140,27 @@ def finalize_plan(request):
                 start_time=task_data.get('start', None),
                 end_time=task_data.get('end', None),
             ).save()
+        # instant notify that event creation is successful
+        notify(
+            recipient="regostar006@gmail.com",
+            subject=data.get('title', None),
+            content=data.get('title', None) + " Is scheduled for " + data.get('start', None),
+        )
         
+        start_datetime = data.get('start', None)
+        if start_datetime:
+            try:
+                schedule_datetime = datetime.fromisoformat(start_datetime)
+                # schedule notification on start date
+                notify(
+                    recipient="regostar006@gmail.com",
+                    subject=data.get('title', None),
+                    content=data.get('title', None) + " Is scheduled for " + data.get('start', None),
+                    schedule_datetime=schedule_datetime
+                )
+            except Exception as e:
+                print("No schedule created, "+str(e))
         return JsonResponse({"success": True, "message": "Event and tasks saved successfully."}, status=201)
     except Exception as e:
-        return JsonResponse({"success": False, "message": str(e)}, status=400)
+        return JsonResponse({"success": False, "message": str(e)}, status=500)
 

@@ -55,7 +55,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -176,7 +176,8 @@ genai.configure(api_key=GOOGLE_API_KEY)
 #     print(m.name)
 
 
-GEMINI = "gemini-1.5"
+GEMINI = getenv("GEMINI", "gemini-1.0-pro-latest")
+
 # "gemini-1.0-pro-latest"
 model = genai.GenerativeModel(GEMINI)
 print(GEMINI, " is initialized")
@@ -234,7 +235,7 @@ CORS_ALLOWED_ORIGINS = []
 ALLOWED_HOSTS = json.loads(getenv("ALLOWED_HOST", ["127.0.0.1"]))
 
 CORS_ALLOWED_ORIGINS = json.loads(getenv("TRUSTED_ORIGIN", ["http://127.0.0.1"]))
-# CSRF_TRUSTED_ORIGINS = json.loads(getenv('TRUSTED_ORIGIN', ['http://127.0.0.1']))
+CSRF_TRUSTED_ORIGINS = json.loads(getenv('TRUSTED_ORIGIN', ['http://127.0.0.1']))
 
 # CORS_ORIGIN_ALLOW_ALL = True
 
