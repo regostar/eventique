@@ -50,3 +50,36 @@ blocks:
             - '#python manage.py test'
       secrets:
         - name: Database and Gemini
+      env_vars:
+        - name: PGPASSWORD
+          value: M1LvHroJy9PW
+        - name: PGDATABASE
+          value: eventique
+        - name: PGPASSWORD
+          value: M1LvHroJy9PW
+        - name: PGHOST
+          value: ep-yellow-hall-a5y5g8pp.us-east-2.aws.neon.tech
+        - name: PGPORT
+          value: '5432'
+        - name: ENDPOINT_ID
+          value: ep-yellow-hall-a5y5g8pp
+        - name: GOOGLE_API_KEY
+          value: AIzaSyCaB2OdFhpN8KyyATQrDePZt1yuSvsbPLI
+        - name: DJANGO_LOGLEVEL
+          value: INFO
+        - name: ALLOWED_HOST
+          value: '["127.0.0.1", "localhost"]'
+        - name: TRUSTED_ORIGIN
+          value: '["http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:3000", "http://localhost:3000"]'
+        - name: SENDGRID_API_KEY
+          value: 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
+        - name: QUEUE_ID
+          value: email-queue
+        - name: PROJECT
+          value: bamboo-theorem-415222
+        - name: LOCATION
+          value: us-central1
+        - name: CLOUD_FUNCTION_URL
+          value: 'https://us-central1-bamboo-theorem-415222.cloudfunctions.net/send_email'
+        - name: GEMINI
+          value: gemini-1.0-pro-latest
