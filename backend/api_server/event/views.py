@@ -3,7 +3,7 @@ from datetime import datetime
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
-from chatbot.models import Event
+from chatbot.models import Event, Task
 
 @require_http_methods(["GET"])
 def get_events(request):
@@ -29,8 +29,7 @@ def get_events(request):
                 'end': event.end_time,
                 'description': event.description,
             }
-            events.append(jsonEvent)
-    
+            events.append(jsonEvent)    
 
         return JsonResponse({'events': events}, status=200)
     except Exception as e:
@@ -52,7 +51,21 @@ def single_event(request, eventId=None):
                 'start': event_obj.start_time,
                 'end': event_obj.end_time,
                 'description': event_obj.description,
+                'tasks': []
             }
+            query = Q(event_id = eventId)
+            taskQuerySet = Task.objects.filter(query)
+
+            def prepareResponseTask(task):
+                return {
+                    "title": task.title,
+                    "start": task.start_time,
+                    "description": task.description,
+                    "end": task.end_time,
+                }
+            
+            for task in taskQuerySet:
+                jsonEvent['tasks'].append(prepareResponseTask(task))
 
             return JsonResponse(jsonEvent, status=200)
     
