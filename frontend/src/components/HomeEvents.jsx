@@ -31,7 +31,7 @@ export default function HomeEvents() {
   return (
     <div>
       {loading ? (
-        <Loader message='Loading...' /> // adding the loader message
+        <Loader message='Fetching all plans...' /> // adding the loader message
       ) : (
         <>
           <Table events={events} showHeadings={true} />
