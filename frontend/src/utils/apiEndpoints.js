@@ -1,5 +1,5 @@
 const HOST = process.env.REACT_APP_HOST || 'http://localhost';
-const PORT = process.env.REACT_APP_PORT || 8000;
+const PORT = process.env.REACT_APP_PORT;
 let DOMAIN = HOST;
 
 if (PORT) {
