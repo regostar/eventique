@@ -83,7 +83,7 @@ docker-compose up -d
 gcloud auth login
 
 
-
+s
 
 TO PUSH TO CLOUD RUN:- 
 -----------------------
