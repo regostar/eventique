@@ -7,7 +7,7 @@ import { HiOutlineBars3BottomLeft } from 'react-icons/hi2';
 import moment from 'moment';
 
 import { apiEndpoints } from '../utils/apiEndpoints';
-import { testEvent } from '../testData';
+// import { testEvent } from '../testData';
 import Loader from './Loader';
 import TaskOverview from './TaskOverview';
 import TaskPreviewModal from './TaskPreviewModal';
@@ -34,10 +34,10 @@ export default function Event() {
     const url = apiEndpoints.GET_SINGLE_EVENT.replace('<EVENT_ID>', eventId);
     try {
       setLoading(true);
-      // const resp = await axios.get(url);
-      // if (resp?.data?.event)
-      //     setEvent({...resp?.data?.event});
-      setEvent({ ...testEvent });
+      const resp = await axios.get(url);
+      if (resp?.data)
+          setEvent({...resp?.data});
+      // setEvent({ ...testEvent });
     } catch (error) {
       console.log('Error fetching event details');
     }
@@ -72,10 +72,10 @@ export default function Event() {
             </span>
           </div>
         </div>
-        {event?.purpose && (
+        {event?.description && (
           <div className='flex gap-2 items-center justify-start p-2'>
             <HiOutlineBars3BottomLeft className='text-md w-7 h-7' />
-            <p className='text-md text-gray-700'>{event?.purpose}</p>
+            <p className='text-md text-gray-700'>{event?.description}</p>
           </div>
         )}
       </div>
