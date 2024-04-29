@@ -1,5 +1,5 @@
 const HOST = process.env.REACT_APP_HOST || 'http://localhost';
-const PORT = process.env.REACT_APP_PORT;
+const PORT = process.env.REACT_APP_PORT || 8000;
 let DOMAIN = HOST;
 
 if (PORT) {
@@ -15,6 +15,7 @@ export const apiEndpoints = {
     'GET_SINGLE_TASK': `${DOMAIN}/api/tasks/<TASK_ID>`,
     'UPDATE_TASK': `${DOMAIN}/api/tasks/<TASK_ID>`,
     'DELETE_TASK': `${DOMAIN}/api/tasks/<TASK_ID>`,
+    'GET_SINGLE_EVENT': `${DOMAIN}/api/events/<EVENT_ID>`,
     'GET_EVENTS': `${DOMAIN}/api/events/`,
     'GEN_EVENT': `${DOMAIN}/api/chatbot/generate-plan?prompt=<PROMPT>`,
     'REGEN_EVENT': `${DOMAIN}/api/chatbot/generate-plan?regenerate=true&prompt=<PROMPT>`,
