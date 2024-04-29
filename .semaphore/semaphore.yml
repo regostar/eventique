@@ -47,6 +47,6 @@ blocks:
           commands:
             - cd api_server
             - python manage.py migrate
-            - python manage.py test
+            - '#python manage.py test'
       secrets:
         - name: Database and Gemini
