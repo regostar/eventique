@@ -124,3 +124,5 @@ docker run --env-file .env  --name backend-eventique -p 8000:8000  -d api_server
 docker tag eventique-backend regostar/eventique-backend
 
 https://medium.com/@roman.njoroge_90440/google-gemini-tutorial-how-to-build-a-chat-app-with-characters-from-your-favorite-show-a8c0efd732ef
+
+- test deploy
