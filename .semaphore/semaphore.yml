@@ -38,9 +38,9 @@ blocks:
         - name: DJANGO_LOGLEVEL
           value: INFO
         - name: ALLOWED_HOST
-          value: '["127.0.0.1", "localhost"]'
+          value: '''["127.0.0.1", "localhost"]'''
         - name: TRUSTED_ORIGIN
-          value: '["http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:3000", "http://localhost:3000"]'
+          value: '''["http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:3000", "http://localhost:3000"]'''
         - name: SENDGRID_API_KEY
           value: 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
         - name: QUEUE_ID
