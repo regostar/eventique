@@ -1,6 +1,7 @@
 from django.db import models
 # from user_auth_api.models import AppUser
-import django.contrib.auth
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Event model
 class Event(models.Model):
@@ -10,13 +11,14 @@ class Event(models.Model):
     purpose = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    # user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 # Task model
 class Task(models.Model):
     title = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
