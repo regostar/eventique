@@ -208,6 +208,7 @@ class FinalizePlanView(APIView):
             # print("us ", type(request.user))
             data = json.loads(request.body)
             print("\n", data.get('start'))
+            end_time = data.get('end') if data.get('end') else data.get('start', None)
             
             # Create the Event
             event = Event.objects.create(
@@ -216,7 +217,7 @@ class FinalizePlanView(APIView):
                 purpose=data.get('purpose', None),
                 prompt=data.get('prompt', None),
                 start_time=data.get('start', None),
-                end_time=data.get('end', None),
+                end_time=end_time,
             )
             event.save()
             print("\nEvent saved!!\n")
@@ -229,7 +230,7 @@ class FinalizePlanView(APIView):
                     title=task_data.get('title', None),
                     description=task_data.get('description', None),
                     start_time=task_data.get('start', None),
-                    end_time=task_data.get('end', None),
+                    end_time=end_time,
                 ).save()
             # instant notify that event creation is successful
             notify(

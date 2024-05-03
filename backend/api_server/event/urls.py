@@ -3,6 +3,6 @@ from . import views
 
 # URLConf
 urlpatterns = [
-    path('', views.get_events, name='event/get-events'),
-    path('<int:eventId>', views.single_event, name='event/single-event')
+    path('', views.GetEventsView.as_view(), name='event/get-events'),
+    path('<int:eventId>', views.SingleEventView.as_view(), name='event/single-event')
 ]
