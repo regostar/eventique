@@ -50,7 +50,9 @@ export default function Login() {
 
     if (resp?.data) {
       const id = resp.data?.id;
-      const csrf = Cookies.get('csrftoken')
+      const csrf = Cookies.get('csrftoken');
+      console.log("csrf = ", csrf);
+      localStorage.setItem('authToken', resp.data?.key);
       
       localStorage.setItem('USER_ID', id);
       localStorage.setItem('CSRF_TOKEN', csrf);

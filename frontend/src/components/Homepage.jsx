@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -10,7 +11,20 @@ import HomeEvents from './HomeEvents';
 import Task from './Task';
 import Event from './Event';
 
+
+
 function Homepage() {
+  (function() {
+      let token = localStorage.getItem('authToken');
+      if (token) {
+          axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+      } else {
+          axios.defaults.headers.common['Authorization'] = null;
+          /*if setting null does not remove Authorization header then try     
+            delete axios.defaults.headers.common['Authorization'];
+          */
+      }
+  })();
   const [activePageName, setActivePageName] = useState('calendar')
   return (
     <div className='flex h-screen'>

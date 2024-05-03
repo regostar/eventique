@@ -1,5 +1,5 @@
 const HOST = process.env.REACT_APP_HOST || 'http://localhost';
-const PORT = process.env.REACT_APP_PORT || 8000;
+const PORT = process.env.REACT_APP_PORT;
 let DOMAIN = HOST;
 
 if (PORT) {
@@ -7,8 +7,9 @@ if (PORT) {
 }
 
 export const apiEndpoints = {
-    'LOGIN': `${DOMAIN}/api/auth/login`,
-    'SIGNUP': `${DOMAIN}/api/auth/register`,
+    'LOGIN': `${DOMAIN}/api/auth/login/`,
+    'LOGOUT': `${DOMAIN}/api/auth/logout/`,
+    'SIGNUP': `${DOMAIN}/api/chatbot/register/`,
     'GET_TASKS': `${DOMAIN}/api/tasks?start_time=<START_TIME>&end_time=<END_TIME>`,
     'GET_EVENTS': `${DOMAIN}/api/events`,
     'ADD_TASK': `${DOMAIN}/api/tasks/`,
