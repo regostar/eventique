@@ -89,7 +89,18 @@ export default function Chatpage() {
   const fetchNSetPlan = async (url) => {
     let resp = null;
     try {
-      resp = await axios.get(url);
+
+
+      const token = localStorage.getItem('authToken');
+      console.log("token = ", token);
+
+      resp = await axios.get(url, {
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      });
+
+      // resp = await axios.get(url);
     } catch (error) {
       console.log('error fetching event plan');
     }

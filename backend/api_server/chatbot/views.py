@@ -13,6 +13,20 @@ from datetime import datetime
 def status_check(request):
     return JsonResponse({'success': True}, status=200)
 
+
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+class ExampleAuthenticatedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        return Response(data={'message': f'Hello, {request.user.username}'})
+
+        
 # @login_required
 @require_http_methods(["GET"])
 def generate_plan(request):
@@ -30,6 +44,9 @@ def generate_plan(request):
         }]
     """
     try:
+        print("!")
+        print("user =", request.user)
+        print("!")
         prompt = request.GET.get('prompt')
         reprompt = request.GET.get('reprompt', False)
         # if true, history should be there

@@ -1,5 +1,6 @@
 from django.db import models
-from user_auth_api.models import AppUser
+# from user_auth_api.models import AppUser
+import django.contrib.auth
 
 # Event model
 class Event(models.Model):
@@ -9,7 +10,7 @@ class Event(models.Model):
     purpose = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    # user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

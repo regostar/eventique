@@ -7,7 +7,7 @@ if (PORT) {
 }
 
 export const apiEndpoints = {
-    'LOGIN': `${DOMAIN}/api/auth/login`,
+    'LOGIN': `${DOMAIN}/api/auth/login/`,
     'SIGNUP': `${DOMAIN}/api/auth/register`,
     'GET_TASKS': `${DOMAIN}/api/tasks?start_time=<START_TIME>&end_time=<END_TIME>`,
     'GET_EVENTS': `${DOMAIN}/api/events`,

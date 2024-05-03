@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "corsheaders",
-    "user_auth_api",
+    'django.contrib.sites',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     "chatbot",
     "tasks",
     "event",
@@ -55,7 +57,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -97,14 +99,14 @@ WSGI_APPLICATION = "api_server.wsgi.application"
 
 
 print("If .env is ready you will see the database name here -")
-print(getenv("PGDATABASE"))
-
+# print(getenv("PGDATABASE"))
+dbs = "eventique_dev"
 # Replace the DATABASES section of your settings.py with this
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": getenv("PGDATABASE"),
+        "NAME": dbs,
         "USER": getenv("PGUSER"),
         "PASSWORD": getenv("PGPASSWORD"),
         "HOST": getenv("PGHOST"),
@@ -116,6 +118,7 @@ DATABASES = {
         "DISABLE_SERVER_SIDE_CURSORS": True,
     }
 }
+print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -158,12 +161,16 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+#     "PAGE_SIZE": 10,
+# }
 
-AUTH_USER_MODEL = "user_auth_api.AppUser"
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 
 GOOGLE_API_KEY = getenv("GOOGLE_API_KEY")
@@ -240,3 +247,13 @@ CSRF_TRUSTED_ORIGINS = json.loads(getenv('TRUSTED_ORIGIN', ['http://127.0.0.1'])
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = json.loads(getenv("TRUSTED_ORIGIN", ["http://localhost:3000"]))
+
+# AUTH_USER_MODEL = "user_auth_api.AppUser"
+
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
