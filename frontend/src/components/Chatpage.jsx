@@ -149,7 +149,8 @@ export default function Chatpage() {
     const processedPlan = prepareForApprove();
 
     try {
-      await axios.post(url, { ...processedPlan, prompt });
+      await axios.post(url, { ...processedPlan, prompt,
+       });
     } catch (error) {
       console.log('Error approving plan');
       return;
