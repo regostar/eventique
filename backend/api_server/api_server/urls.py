@@ -28,6 +28,7 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/auth/', include('dj_rest_auth.urls')),
+    # path('api/reg/', include('dj_rest_auth.registration.urls')),
     # path('api/auth/', include('user_auth_api.urls')),
     path('api/chatbot/', include('chatbot.urls')),
     path('api/tasks/', include('tasks.urls')),

@@ -321,3 +321,26 @@ class FinalizePlanView(APIView):
 #     except Exception as e:
 #         return JsonResponse({"success": False, "message": str(e)}, status=500)
 
+
+
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+        user = User.objects.create_user(username=username, email=email, password=password)
+        token, created = Token.objects.get_or_create(user=user)
+        return JsonResponse({'message': 'User created successfully', 'token': token.key}, status=201)
+
+    return JsonResponse({'error': 'Only POST method is allowed'}, status=405)

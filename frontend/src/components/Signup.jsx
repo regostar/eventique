@@ -43,7 +43,7 @@ const Signup = () => {
             resp = await axios.post(apiEndpoints.SIGNUP, {
                 name: username,
                 email,
-                password
+                password: password
             },
             {
                 headers: {
@@ -59,6 +59,7 @@ const Signup = () => {
 
         if(resp?.data)
         {
+            localStorage.setItem('authToken', resp.data?.token);
             //navigate to homepage if the account has been created 
             // maybe show some msg and store the details in localstorage before navigating
             navigate('/');
