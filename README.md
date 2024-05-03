@@ -10,7 +10,7 @@ Development Platform: Hardware - min 4GB RAM, 4 cores. OS - Windows/Ubuntu
 
 
 #### Software Environment:
-Python, ChatGPT 4 APIs, Google calendar APIs, Outlook calendar APIs, FastAPI/Django, React, GCP/Azure, MongoDB, tailwindCSS, HTML. 
+Python, Gemini APIs, Django, React, GCP, Postgresql, tailwindCSS, HTML. 
 
 
 

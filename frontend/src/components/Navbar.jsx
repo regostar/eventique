@@ -17,7 +17,7 @@ export default function Navbar({ pageName, setActivePageName }) {
           className='flex items-center justify-center rounded-md font-bold bg-purple-500 text-white px-4 py-2'
         >
           <FaPlus className='mr-1' />
-          <span>Create</span>
+          <span>Plan</span>
         </Link>
         <div className='flex gap-1 items-center justify-center'>
           <CgProfile className='w-8 h-8 ' />
