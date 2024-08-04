@@ -13,7 +13,11 @@ Development Platform: Hardware - min 4GB RAM, 4 cores. OS - Windows/Ubuntu
 #### Software Environment:
 Python, Gemini APIs, Django, React, GCP, Postgresql, tailwindCSS, HTML. 
 
+#### Software Architecture:
+![image](https://github.com/user-attachments/assets/7fc292a8-17f0-40e7-bb02-a38aaad6de80)
 
+#### Cloud Infrastructure:
+![image](https://github.com/user-attachments/assets/af7a857e-f614-4d14-afb8-6997c9d9888a)
 
 #### Features: 
 
