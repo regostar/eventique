@@ -8,8 +8,6 @@ UI Mockup : https://app.visily.ai/projects/8d6cb7f9-cd2c-41c4-b292-5667f0c05273/
 For anyone who is planning an event like a birthday party, wedding, or conference, the application Eventique is a web app that works on a browser on any device. It provides Artificial intelligence to supercharge your event planning in minutes with a recommender, scheduler, organizer, and notification system. Unlike other event management companies (such as Cvent, EventPro, and Bizzabo) which don’t have recommendation systems, are pricey and take a lot of time, our product provides a platform to design your event quickly in a way you would like within a few minutes.
 Development Platform: Hardware - min 4GB RAM, 4 cores. OS - Windows/Ubuntu
 
-.
-
 #### Software Environment:
 Python, Gemini APIs, Django, React, GCP, Postgresql, tailwindCSS, HTML. 
 
@@ -18,6 +16,13 @@ Python, Gemini APIs, Django, React, GCP, Postgresql, tailwindCSS, HTML.
 
 #### Cloud Infrastructure:
 ![image](https://github.com/user-attachments/assets/af7a857e-f614-4d14-afb8-6997c9d9888a)
+
+### CI/CD Pipeline
+![image](https://github.com/user-attachments/assets/30559f8b-4370-48e7-975c-f3c34206194c)
+
+### CD Pipeline
+
+![image](https://github.com/user-attachments/assets/880318d0-5704-4bc7-bc23-5a33a1c35dd9)
 
 #### Features: 
 
